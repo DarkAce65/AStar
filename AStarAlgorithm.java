@@ -24,4 +24,32 @@ public class AStarAlgorithm {
 
 		}
 	}
+
+	private boolean evaulateMap(Node[][] map) {
+		boolean start = false;
+		boolean end = false;
+		for(Node[] row : map) {
+			for(Node node : row) {
+				if(node.getType() == 1) {
+					if(start) {
+						System.out.println("More than one start positions found.");
+						return false;
+					}
+					start = true;
+				}
+				if(node.getType() == 2) {
+					if(end) {
+						System.out.println("More than one end positions found.");
+						return false;
+					}
+					end = true;
+				}
+			}
+		}
+		if(start && end) {
+			return true;
+		}
+		System.out.println("Missing start or end position.");
+		return false;
+	}
 }
