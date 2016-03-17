@@ -44,6 +44,6 @@ public class Node extends Point implements Comparable<Node> {
 	}
 
 	public String toString() {
-		return "Type: " + this.type + ", Cost: " + this.stepCost + " + " + this.heuristicCost + " = " + (this.stepCost + this.heuristicCost);
+		return "Type: " + type + ", Cost: " + stepCost + " + " + heuristicCost + " = " + (stepCost + heuristicCost);
 	}
 }
