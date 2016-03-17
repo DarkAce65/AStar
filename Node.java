@@ -1,18 +1,15 @@
-import java.awt.Point;
-
-public class Node extends Point implements Comparable<Node> {
+public class Node implements Comparable<Node> {
 	private final int type; // 0 - space, 1 - start, 2 - end, 3 - wall
 	private int stepCost = 0;
 	private int heuristicCost = 0;
 	private int cost = 0;
 
-	public Node(int type, int x, int y) {
-		super(x, y);
+	public Node(int type) {
 		this.type = type;
 	}
 
-	public Node(int x, int y) {
-		this(0, x, y);
+	public Node() {
+		this(0);
 	}
 
 	public int getType() {
@@ -31,11 +28,10 @@ public class Node extends Point implements Comparable<Node> {
 		return cost;
 	}
 
-	public int evaluateCost(int stepCost, Node end) {
+	public void setCosts(int stepCost, int heuristicCost) {
 		this.stepCost = stepCost;
-		this.heuristicCost = Math.abs(end.x - this.x) + Math.abs(end.y - this.y);
+		this.heuristicCost = heuristicCost;
 		cost = stepCost + heuristicCost;
-		return cost;
 	}
 
 	public int compareTo(Node p) {
@@ -47,6 +43,6 @@ public class Node extends Point implements Comparable<Node> {
 	}
 
 	public String toString() {
-		return "(" + this.x + ", " + this.y + ") Type: " + this.type + ", Step Cost: " + this.stepCost + ", Heuristic Cost: " + this.heuristicCost + ", Node Cost: " + this.cost;
+		return "Type: " + this.type + ", Cost: " + this.stepCost + " + " + this.heuristicCost + " = " + this.cost;
 	}
 }
