@@ -39,22 +39,23 @@ public class AStarAlgorithm {
 	private boolean evaulateMap(Node[][] map) {
 		Node start = null;
 		Node end = null;
-		for(Node[] row : map) {
-			for(Node node : row) {
-				if(node.getType() == 1) {
+		for(int x = 0; x < map.length; x++) {
+			for(int y = 0; y < map[0].length; y++) {
+				if(map[x][y].getType() == 1) {
 					if(start != null) {
 						System.out.println("More than one start position found.");
 						return false;
 					}
-					start = node;
+					start = map[x][y];
 				}
-				else if(node.getType() == 2) {
+				else if(map[x][y].getType() == 2) {
 					if(end != null) {
 						System.out.println("More than one end position found.");
 						return false;
 					}
-					end = node;
+					end = map[x][y];
 				}
+				map[x][y].setLocation(x, y);
 			}
 		}
 		if(start != null && end != null) {

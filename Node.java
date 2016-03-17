@@ -1,10 +1,13 @@
-public class Node implements Comparable<Node> {
+import java.awt.Point;
+
+public class Node extends Point implements Comparable<Node> {
 	private final int type; // 0 - space, 1 - start, 2 - end, 3 - wall
 	private int stepCost = 0;
 	private int heuristicCost = 0;
 	private int cost = 0;
 
 	public Node(int type) {
+		super(0, 0);
 		this.type = type;
 	}
 
