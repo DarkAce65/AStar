@@ -3,16 +3,17 @@ import java.util.ArrayList;
 public class AStarAlgorithm {
 	private Node start;
 	private Node end;
-	private ArrayList<Node> open;
-	private ArrayList<Node> closed;
 
+	private CostSortedNodeList<Node> open;
+	private CostSortedNodeList<Node> closed;
 	private ArrayList<Node> steps;
 
 	public AStarAlgorithm(int sx, int sy, int ex, int ey) {
 		start = new Node(sx, sy);
 		end = new Node(ex, ey);
-		open = new ArrayList<Node>();
-		closed = new ArrayList<Node>();
+
+		open = new CostSortedNodeList<Node>();
+		closed = new CostSortedNodeList<Node>();
 		steps = new ArrayList<Node>();
 	}
 
