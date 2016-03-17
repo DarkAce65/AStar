@@ -15,7 +15,7 @@ public class CostSortedNodeList extends ArrayList<Node> {
 		while(low <= high) {
 			int middle = (high + low) / 2;
 			int diff = this.get(middle).compareTo(node);
-			if(diff == 0) {
+			if(this.get(middle).equals(node)) {
 				return middle;
 			}
 			else if(diff > 0) {
@@ -38,7 +38,7 @@ public class CostSortedNodeList extends ArrayList<Node> {
 		while(low < high) {
 			int middle = (high + low) / 2;
 			int diff = this.get(middle).compareTo(node);
-			if(diff == 0) {
+			if(this.get(middle).equals(node)) {
 				return false;
 			}
 			else if(diff > 0) {
