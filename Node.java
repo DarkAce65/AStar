@@ -35,6 +35,10 @@ public class Node extends Point implements Comparable<Node> {
 		this.heuristicCost = heuristicCost;
 	}
 
+	public boolean equals(Node p) {
+		return this.x == p.x && this.y == p.y;
+	}
+
 	public int compareTo(Node p) {
 		int diff = this.getCost() - p.getCost();
 		if(diff == 0) {
