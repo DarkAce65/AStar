@@ -24,4 +24,16 @@ public class AStarAlgorithm {
 	public void setEnd(int x, int y) {
 		end.setPosition(x, y);
 	}
+
+	public void findPath() {
+		open.empty();
+		closed.empty();
+		steps.empty();
+		start.evaluateCost(0, end);
+		open.add(start);
+
+		while(open.size() > 0) {
+
+		}
+	}
 }
