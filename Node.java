@@ -2,12 +2,14 @@ import java.awt.Point;
 
 public class Node extends Point implements Comparable<Node> {
 	private final int type; // 0 - space, 1 - start, 2 - end, 3 - wall
+	private Node parent;
 	private int stepCost = 0;
 	private int heuristicCost = 0;
 
 	public Node(int type) {
 		super(0, 0);
 		this.type = type;
+		this.parent = null;
 	}
 
 	public Node() {
@@ -16,6 +18,14 @@ public class Node extends Point implements Comparable<Node> {
 
 	public int getType() {
 		return type;
+	}
+
+	public Node getParent() {
+		return parent;
+	}
+
+	public void setParent(Node parent) {
+		this.parent = parent;
 	}
 
 	public int getStepCost() {
