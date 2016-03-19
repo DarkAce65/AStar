@@ -26,21 +26,7 @@ public class AStar extends JFrame implements ActionListener {
 	public AStar() {
 		super("A* Algorithm");
 		algorithm = new AStarAlgorithm();
-
-		try {
-			map = getMapFromFile("map.csv");
-			if(!validateMap(map)) {
-				map = createDefaultMap();
-				System.out.println("Loaded default map");
-			}
-			else {
-				System.out.println("Loaded map.csv");
-			}
-		}
-		catch(IOException e) {
-			map = createDefaultMap();
-			System.out.println("Loaded default map");
-		}
+		loadDefaultMap();
 
 		this.setLayout(new BorderLayout());
 		this.setResizable(false);
@@ -123,29 +109,35 @@ public class AStar extends JFrame implements ActionListener {
 		return false;
 	}
 
-	private Node[][] getMapFromFile(String fileName) throws IOException {
-		BufferedReader mapFile = new BufferedReader(new FileReader(fileName), 1024);
-		String line = mapFile.readLine();
-		ArrayList<String[]> mapData = new ArrayList<String[]>();
-		while(line != null) {
-			mapData.add(line.split(","));
-			line = mapFile.readLine();
-		}
-		mapFile.close();
-		Node[][] map = new Node[mapData.size()][mapData.get(0).length];
-		this.displayMap = new Tile[mapData.size()][mapData.get(0).length];
-		for(int i = 0; i < map.length; i++) {
-			for(int j = 0; j < map[0].length; j++) {
-				map[i][j] = new Node(j, i, Integer.parseInt(mapData.get(i)[j].trim()));
+	private void loadMapFromFile(String fileName) {
+		try {
+			BufferedReader mapFileReader = new BufferedReader(new FileReader(fileName), 1024);
+			String line = mapFileReader.readLine();
+			ArrayList<String[]> mapData = new ArrayList<String[]>();
+			while(line != null) {
+				mapData.add(line.split(","));
+				line = mapFileReader.readLine();
 			}
-		}
+			mapFileReader.close();
 
-		return map;
+			Node[][] map = new Node[mapData.size()][mapData.get(0).length];
+			for(int i = 0; i < map.length; i++) {
+				for(int j = 0; j < map[0].length; j++) {
+					map[i][j] = new Node(j, i, Integer.parseInt(mapData.get(i)[j].trim()));
+				}
+			}
+
+			this.map = map;
+			this.displayMap = new Tile[map.length][map[0].length];
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+			loadDefaultMap();
+		}
 	}
 
-	private Node[][] createDefaultMap() {
+	private void loadDefaultMap() {
 		Node[][] map = new Node[7][11];
-		this.displayMap = new Tile[7][11];
 		for(int i = 0; i < map.length; i++) {
 			for(int j = 0; j < map[0].length; j++) {
 				map[i][j] = new Node(j, i);
@@ -154,7 +146,8 @@ public class AStar extends JFrame implements ActionListener {
 		map[3][3] = new Node(3, 3, 1);
 		map[3][7] = new Node(7, 3, 2);
 
-		return map;
+		this.map = map;
+		this.displayMap = new Tile[7][11];
 	}
 
 	public void actionPerformed(ActionEvent e) {
