@@ -1,9 +1,39 @@
+import java.awt.Container;
+import javax.swing.JPanel;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SpringLayout;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class AStar {
+public class AStar extends JFrame {
+	private Node[][] map;
+	private AStarAlgorithm algorithm;
+
+	public AStar() {
+		super("A* Algorithm");
+		algorithm = new AStarAlgorithm();
+
+		try {
+			map = getMapFromFile("map.csv");
+			System.out.println("Loaded map.csv");
+		}
+		catch(IOException e) {
+			map = createDefaultMap();
+			System.out.println("Loaded default map");
+		}
+
+		JPanel panel = new JPanel();
+		panel.setLayout(new SpringLayout());
+		panel.add(new JLabel("Test"));
+
+		Container c = getContentPane();
+		c.add(panel);
+	}
+
 	private Node[][] getMapFromFile(String fileName) throws IOException {
 		BufferedReader mapFile = new BufferedReader(new FileReader(fileName), 1024);
 		String line = mapFile.readLine();
@@ -24,27 +54,25 @@ public class AStar {
 		return map;
 	}
 
-	public static void main(String[] args) {
-		AStar aStar = new AStar();
-		AStarAlgorithm aStarAlgorithm = new AStarAlgorithm();
-		Node[][] map;
-
-		try {
-			map = aStar.getMapFromFile("map.csv");
-			System.out.println("Loaded map.csv");
-		}
-		catch(IOException e) {
-			map = new Node[7][11];
-			for(int i = 0; i < map.length; i++) {
-				for(int j = 0; j < map[0].length; j++) {
-					map[i][j] = new Node();
-				}
+	private Node[][] createDefaultMap() {
+		Node[][] map = new Node[7][11];
+		for(int i = 0; i < map.length; i++) {
+			for(int j = 0; j < map[0].length; j++) {
+				map[i][j] = new Node();
 			}
-			map[3][3] = new Node(1);
-			map[3][7] = new Node(2);
-			System.out.println("Loaded default map");
 		}
+		map[3][3] = new Node(1);
+		map[3][7] = new Node(2);
 
-		aStarAlgorithm.findPath(map);
+		return map;
+	}
+
+	public static void main(String[] args) {
+		AStar window = new AStar();
+		window.setBounds(100, 100, 600, 600);
+		window.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		window.setVisible(true);
+
+		window.algorithm.findPath(window.map);
 	}
 }

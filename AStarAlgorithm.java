@@ -45,7 +45,6 @@ public class AStarAlgorithm {
 		}
 		if(start != null && end != null) {
 			this.map = map;
-				System.out.println(getASCIIMap());
 			this.start = start;
 			this.end = end;
 			return true;
@@ -95,8 +94,6 @@ public class AStarAlgorithm {
 				System.out.println("--");
 			}
 			reconstructPath();
-			System.out.println(steps);
-			System.out.println(getASCIIMap());
 		}
 	}
 
@@ -136,29 +133,11 @@ public class AStarAlgorithm {
 	private void reconstructPath() {
 		Node current = this.end;
 		Node parent = current.getParent();
-		System.out.println(current);
-		System.out.println(parent);
 
 		while(parent != null && !start.equals(parent)) {
 			steps.add(0, parent);
 			current = parent;
 			parent = current.getParent();
 		}
-	}
-
-	public String getASCIIMap() {
-		String output = "";
-		for(Node[] row : map) {
-			for(Node node : row) {
-				if(steps.contains(node)) {
-					output += "X ";
-				}
-				else {
-					output += node.getType() + " ";
-				}
-			}
-			output += "\n";
-		}
-		return output;
 	}
 }
