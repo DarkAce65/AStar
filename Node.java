@@ -52,7 +52,7 @@ public class Node extends Point implements Comparable<Node> {
 	public int compareTo(Node p) {
 		int diff = this.getCost() - p.getCost();
 		if(diff == 0) {
-			diff = this.stepCost - p.getStepCost();
+			diff = this.heuristicCost - p.getHeuristicCost();
 		}
 		return diff;
 	}
