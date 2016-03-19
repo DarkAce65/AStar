@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -9,7 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class AStarDisplay extends JPanel {
+public class AStarDisplay extends JPanel implements MouseListener {
 	private AStarAlgorithm algorithm;
 
 	private Node[][] map;
@@ -19,6 +21,7 @@ public class AStarDisplay extends JPanel {
 		super();
 		algorithm = new AStarAlgorithm();
 		setBorder(new EmptyBorder(10, 10, 10, 10));
+		addMouseListener(this);
 	}
 
 	private void setDisplayGridSize() {
@@ -187,4 +190,23 @@ public class AStarDisplay extends JPanel {
 		displayMap[rows - 1][cols - 1] = new Tile(map[rows - 1][cols - 1]);
 		buildDisplayGrid();
 	}
+
+	public void mousePressed(MouseEvent e) {
+		if(findComponentAt(e.getX(), e.getY()) instanceof Tile) {
+			Tile t = (Tile) findComponentAt(e.getX(), e.getY());
+			Node n = t.getNode();
+			if(n.getType() == 0) {
+				n.setType(3);
+			}
+			else if(n.getType() == 3) {
+				n.setType(0);
+			}
+			t.reset();
+		}
+	}
+	public void mouseReleased(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {}
+
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
 }
