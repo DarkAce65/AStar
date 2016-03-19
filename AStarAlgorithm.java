@@ -68,10 +68,10 @@ public class AStarAlgorithm {
 
 		while(open.size() > 0) {
 			Node current = open.poll();
+			closed.add(current);
 			if(closed.contains(end)) {
 				break;
 			}
-			closed.add(current);
 			System.out.println(current);
 			for(Node neighbor : getNeighbors(current)) {
 				if(closed.contains(neighbor) || neighbor.getType() >= 3) {
