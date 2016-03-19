@@ -21,85 +21,6 @@ public class AStarAlgorithm {
 		closed = new CostSortedNodeList();
 	}
 
-	public void findPath(Node[][] map) {
-		if(evaulateMap(map)) {
-			open.clear();
-			closed.clear();
-			steps.clear();
-
-			int step = 0;
-			start.setCosts(step, calculateHeuristicCost(start));
-			open.add(start);
-
-			while(open.size() > 0) {
-				Node current = open.poll();
-				if(current.equals(end)) {
-					break;
-				}
-				closed.add(current);
-				step++;
-				for(Node neighbor : getNeighbors(current)) {
-					if(closed.contains(neighbor) || neighbor.getType() != 0) {
-						continue;
-					}
-					if(!open.contains(neighbor)) {
-						neighbor.setParent(current);
-						steps.add(current);
-						neighbor.setCosts(step, calculateHeuristicCost(neighbor));
-						open.add(neighbor);
-					}
-				}
-				System.out.println(open);
-				if(step==66) break;
-			}
-
-			for(Node[] row : map) {
-				for(Node node : row) {
-					if(node.getParent() != null) {
-						System.out.print("X ");
-					}
-					else {
-						System.out.print(node.getType() + " ");
-					}
-				}
-				System.out.println();
-			}
-		}
-	}
-
-	private int calculateHeuristicCost(Node node) {
-		return Math.abs(node.x - end.x) + Math.abs(node.y - end.y);
-	}
-
-	private ArrayList<Node> getNeighbors(Node node) {
-		ArrayList<Node> neighbors = new ArrayList<Node>(4);
-		if(node.x > 0) {
-			Node n = map[node.y][node.x - 1];
-			if(n.getType() == 0) {
-				neighbors.add(n);
-			}
-		}
-		if(node.y > 0) {
-			Node n = map[node.y - 1][node.x];
-			if(n.getType() == 0) {
-				neighbors.add(n);
-			}
-		}
-		if(node.x < map[0].length - 1) {
-			Node n = map[node.y][node.x + 1];
-			if(n.getType() == 0) {
-				neighbors.add(n);
-			}
-		}
-		if(node.y < map.length - 1) {
-			Node n = map[node.y + 1][node.x];
-			if(n.getType() == 0) {
-				neighbors.add(n);
-			}
-		}
-		return neighbors;
-	}
-
 	private boolean evaulateMap(Node[][] map) {
 		Node start = null;
 		Node end = null;
@@ -133,11 +54,109 @@ public class AStarAlgorithm {
 		return false;
 	}
 
+	public void findPath(Node[][] map) {
+		if(evaulateMap(map)) {
+			open.clear();
+			closed.clear();
+			steps.clear();
+
+			start.setCosts(0, calculateHeuristicCost(start));
+			open.add(start);
+
+			while(open.size() > 0) {
+				Node current = open.poll();
+				if(closed.contains(end)) {
+					break;
+				}
+				closed.add(current);
+				System.out.println(current);
+				for(Node neighbor : getNeighbors(current)) {
+					if(closed.contains(neighbor) || neighbor.getType() == 3) {
+						System.out.print("Skip neighbor: ");
+						System.out.println(neighbor);
+						continue;
+					}
+					if(open.contains(neighbor)) {
+						if(neighbor.getStepCost() > current.getStepCost() + 1) {
+							System.out.println(neighbor);
+							neighbor.setParent(current);
+							neighbor.setCosts(current.getStepCost() + 1, calculateHeuristicCost(neighbor));
+							System.out.print("Found better path: ");
+							System.out.println(neighbor);
+						}
+					}
+					else {
+						neighbor.setParent(current);
+						neighbor.setCosts(current.getStepCost() + 1, calculateHeuristicCost(neighbor));
+						open.add(neighbor);
+						System.out.print("Add neighbor to open list: ");
+						System.out.println(neighbor);
+					}
+				}
+				System.out.println("--");
+			}
+			reconstructPath();
+			System.out.println(steps);
+			System.out.println(getASCIIMap());
+		}
+	}
+
+	private int calculateHeuristicCost(Node node) {
+		return Math.abs(node.x - end.x) + Math.abs(node.y - end.y);
+	}
+
+	private ArrayList<Node> getNeighbors(Node node) {
+		ArrayList<Node> neighbors = new ArrayList<Node>(4);
+		if(node.x > 0) {
+			Node n = map[node.y][node.x - 1];
+			if(n.getType() != 3) {
+				neighbors.add(n);
+			}
+		}
+		if(node.y > 0) {
+			Node n = map[node.y - 1][node.x];
+			if(n.getType() != 3) {
+				neighbors.add(n);
+			}
+		}
+		if(node.x < map[0].length - 1) {
+			Node n = map[node.y][node.x + 1];
+			if(n.getType() != 3) {
+				neighbors.add(n);
+			}
+		}
+		if(node.y < map.length - 1) {
+			Node n = map[node.y + 1][node.x];
+			if(n.getType() != 3) {
+				neighbors.add(n);
+			}
+		}
+		return neighbors;
+	}
+
+	private void reconstructPath() {
+		Node current = this.end;
+		Node parent = current.getParent();
+		System.out.println(current);
+		System.out.println(parent);
+
+		while(parent != null && !start.equals(parent)) {
+			steps.add(parent);
+			current = parent;
+			parent = current.getParent();
+		}
+	}
+
 	public String getASCIIMap() {
 		String output = "";
 		for(Node[] row : map) {
 			for(Node node : row) {
-				output += node.getType() + " ";
+				if(steps.contains(node)) {
+					output += "X ";
+				}
+				else {
+					output += node.getType() + " ";
+				}
 			}
 			output += "\n";
 		}
