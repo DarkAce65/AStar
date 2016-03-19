@@ -21,6 +21,17 @@ public class AStarAlgorithm {
 		closed = new CostSortedNodeList();
 	}
 
+	public void reset() {
+		open.clear();
+		closed.clear();
+		steps.clear();
+		for(Node[] row : map) {
+			for(Node n : row) {
+				n.setParent(null);
+			}
+		}
+	}
+
 	public ArrayList<Node> getSteps() {
 		return steps;
 	}
@@ -59,9 +70,7 @@ public class AStarAlgorithm {
 
 	public ArrayList<Node> findPath(Node[][] map) {
 		loadMap(map);
-		open.clear();
-		closed.clear();
-		steps.clear();
+		reset();
 
 		start.setCosts(0, calculateHeuristicCost(start));
 		open.add(start);
