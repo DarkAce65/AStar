@@ -127,21 +127,23 @@ public class AStarDisplay extends JPanel {
 	}
 
 	public void findPath() {
-		ArrayList<Node> steps = algorithm.findPath(map);
-		CostSortedNodeList open = algorithm.getOpenList();
-		CostSortedNodeList closed = algorithm.getClosedList();
-		for(int i = 0; i < map.length; i++) {
-			for(int j = 0; j < map[0].length; j++) {
-				Node n = displayMap[i][j].getNode();
-				if(n.getType() == 0) {
-					if(steps.contains(n)) {
-						displayMap[i][j].setBackground(Color.YELLOW);
-					}
-					else if(closed.contains(n)) {
-						displayMap[i][j].setBackground(new Color(150, 150, 170));
-					}
-					else if(open.contains(n)) {
-						displayMap[i][j].setBackground(new Color(140, 230, 230));
+		if(validateMap(map)) {
+			ArrayList<Node> steps = algorithm.findPath(map);
+			CostSortedNodeList open = algorithm.getOpenList();
+			CostSortedNodeList closed = algorithm.getClosedList();
+			for(int i = 0; i < map.length; i++) {
+				for(int j = 0; j < map[0].length; j++) {
+					Node n = displayMap[i][j].getNode();
+					if(n.getType() == 0) {
+						if(steps.contains(n)) {
+							displayMap[i][j].setBackground(Color.YELLOW);
+						}
+						else if(closed.contains(n)) {
+							displayMap[i][j].setBackground(new Color(150, 150, 170));
+						}
+						else if(open.contains(n)) {
+							displayMap[i][j].setBackground(new Color(140, 230, 230));
+						}
 					}
 				}
 			}
