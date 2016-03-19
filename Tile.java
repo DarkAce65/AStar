@@ -9,7 +9,7 @@ public class Tile extends JPanel {
 		super();
 		node = n;
 		reset();
-		setBorder(new MatteBorder(1, 1, 1, 1, new Color(200, 200, 200)));
+		setBorder(new MatteBorder(n.y == 0 ? 1 : 0, n.x == 0 ? 1 : 0, 1, 1, new Color(64, 64, 64)));
 	}
 
 	public Node getNode() {
