@@ -160,4 +160,16 @@ public class AStarDisplay extends JPanel {
 		}
 		buildDisplayGrid();
 	}
+
+	public void resizeMap(int rows, int cols) {
+		map = new Node[rows][cols];
+		displayMap = new Tile[rows][cols];
+		for(int i = 0; i < rows; i++) {
+			for(int j = 0; j < cols; j++) {
+				map[i][j] = new Node(j, i);
+				displayMap[i][j] = new Tile(map[i][j]);
+			}
+		}
+		buildDisplayGrid();
+	}
 }

@@ -5,15 +5,20 @@ import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.Box;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 import javax.swing.JOptionPane;
+
 import java.util.ArrayList;
 
 public class AStar extends JFrame implements ActionListener {
-	private JButton findPathButton, loadButton, clearMapButton;
+	private JButton findPathButton, loadButton, resizeButton, clearMapButton;
 	private AStarDisplay displayGrid;
 
 	public AStar() {
@@ -32,11 +37,14 @@ public class AStar extends JFrame implements ActionListener {
 		findPathButton.addActionListener(this);
 		loadButton = new JButton("Load Map");
 		loadButton.addActionListener(this);
+		resizeButton = new JButton("Resize Map");
+		resizeButton.addActionListener(this);
 		clearMapButton = new JButton("Clear Map");
 		clearMapButton.addActionListener(this);
 
 		controls.add(findPathButton);
 		controls.add(loadButton);
+		controls.add(resizeButton);
 		controls.add(clearMapButton);
 
 		Container container = this.getContentPane();
@@ -61,6 +69,23 @@ public class AStar extends JFrame implements ActionListener {
 				String fileName = JOptionPane.showInputDialog("Enter the file name of the map to load: ");
 				if(fileName != null) {
 					displayGrid.loadMapFromFile(fileName);
+					this.pack();
+				}
+			}
+			else if(b == resizeButton) {
+				JTextField rows = new JTextField(5);
+				JTextField cols = new JTextField(5);
+
+				JPanel rowColPanel = new JPanel();
+				rowColPanel.add(new JLabel("Rows:"));
+				rowColPanel.add(rows);
+				rowColPanel.add(Box.createHorizontalStrut(15));
+				rowColPanel.add(new JLabel("Columns:"));
+				rowColPanel.add(cols);
+
+				int result = JOptionPane.showConfirmDialog(null, rowColPanel, "Please Enter X and Y Values", JOptionPane.OK_CANCEL_OPTION);
+				if (result == JOptionPane.OK_OPTION) {
+					displayGrid.resizeMap(Integer.parseInt(rows.getText().trim()), Integer.parseInt(cols.getText().trim()));
 					this.pack();
 				}
 			}
