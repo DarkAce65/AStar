@@ -8,8 +8,17 @@ public class Tile extends JPanel {
 	public Tile(Node n) {
 		super();
 		node = n;
+		reset();
+		setBorder(new MatteBorder(1, 1, 1, 1, new Color(200, 200, 200)));
+	}
+
+	public Node getNode() {
+		return node;
+	}
+
+	public void reset() {
 		Color c = Color.WHITE;
-		switch(n.getType()) {
+		switch(node.getType()) {
 			case 1:
 				c = new Color(0, 230, 0);
 				break;
@@ -21,10 +30,5 @@ public class Tile extends JPanel {
 				break;
 		}
 		setBackground(c);
-		setBorder(new MatteBorder(1, 1, 1, 1, new Color(200, 200, 200)));
-	}
-
-	public Node getNode() {
-		return node;
 	}
 }

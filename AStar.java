@@ -187,7 +187,11 @@ public class AStar extends JFrame implements ActionListener {
 				}
 			}
 			if(b == clearMap) {
-				System.out.println("Clear");
+				for(Tile[] row : displayMap) {
+					for(Tile t : row) {
+						t.reset();
+					}
+				}
 			}
 		}
 		repaint();
