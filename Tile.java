@@ -11,20 +11,17 @@ public class Tile extends JPanel {
 		Color c = Color.WHITE;
 		switch(n.getType()) {
 			case 1:
-				c = Color.GREEN;
+				c = new Color(0, 230, 0);
 				break;
 			case 2:
-				c = Color.RED;
+				c = new Color(230, 0, 0);
 				break;
 			case 3:
 				c = Color.BLACK;
 				break;
 		}
-		if(n.getType() == 1) {
-			c = Color.GREEN;
-		}
 		setBackground(c);
-		setBorder(new MatteBorder(1, 1, 1, 1, new Color(100, 100, 100)));
+		setBorder(new MatteBorder(1, 1, 1, 1, new Color(200, 200, 200)));
 	}
 
 	public Node getNode() {

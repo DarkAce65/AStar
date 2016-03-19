@@ -156,13 +156,13 @@ public class AStar extends JFrame implements ActionListener {
 						Node n = displayMap[i][j].getNode();
 						if(n.getType() == 0) {
 							if(steps.contains(n)) {
-								displayMap[i][j].setBackground(Color.BLUE);
+								displayMap[i][j].setBackground(Color.YELLOW);
 							}
 							else if(closed.contains(n)) {
-								displayMap[i][j].setBackground(new Color(100, 100, 100));
+								displayMap[i][j].setBackground(new Color(150, 150, 170));
 							}
 							else if(open.contains(n)) {
-								displayMap[i][j].setBackground(new Color(170, 170, 200));
+								displayMap[i][j].setBackground(new Color(140, 230, 230));
 							}
 						}
 					}
