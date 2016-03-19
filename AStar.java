@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class AStar extends JFrame implements ActionListener {
 	private JButton findPath, clearMap;
 	private Node[][] map;
+	private Tile[][] displayMap;
 	private AStarAlgorithm algorithm;
 
 	public AStar() {
@@ -72,7 +73,8 @@ public class AStar extends JFrame implements ActionListener {
 
 		for(int i = 0; i < map.length; i++) {
 			for(int j = 0; j < map[0].length; j++) {
-				display.add(new Tile(map[i][j]));
+				displayMap[i][j] = new Tile(map[i][j]);
+				display.add(displayMap[i][j]);
 			}
 		}
 		display.validate();
@@ -118,6 +120,7 @@ public class AStar extends JFrame implements ActionListener {
 		}
 		mapFile.close();
 		Node[][] map = new Node[mapData.size()][mapData.get(0).length];
+		this.displayMap = new Tile[mapData.size()][mapData.get(0).length];
 		for(int i = 0; i < map.length; i++) {
 			for(int j = 0; j < map[0].length; j++) {
 				map[i][j] = new Node(j, i, Integer.parseInt(mapData.get(i)[j].trim()));
@@ -129,6 +132,7 @@ public class AStar extends JFrame implements ActionListener {
 
 	private Node[][] createDefaultMap() {
 		Node[][] map = new Node[7][11];
+		this.displayMap = new Tile[7][11];
 		for(int i = 0; i < map.length; i++) {
 			for(int j = 0; j < map[0].length; j++) {
 				map[i][j] = new Node(j, i);
@@ -144,7 +148,25 @@ public class AStar extends JFrame implements ActionListener {
 		if(e.getSource() instanceof JButton) {
 			JButton b = (JButton) e.getSource();
 			if(b == findPath) {
-				System.out.println(algorithm.findPath(map));
+				ArrayList<Node> steps = algorithm.findPath(map);
+				CostSortedNodeList open = algorithm.getOpenList();
+				CostSortedNodeList closed = algorithm.getClosedList();
+				for(int i = 0; i < map.length; i++) {
+					for(int j = 0; j < map[0].length; j++) {
+						Node n = displayMap[i][j].getNode();
+						if(n.getType() == 0) {
+							if(steps.contains(n)) {
+								displayMap[i][j].setBackground(Color.BLUE);
+							}
+							else if(closed.contains(n)) {
+								displayMap[i][j].setBackground(new Color(100, 100, 100));
+							}
+							else if(open.contains(n)) {
+								displayMap[i][j].setBackground(new Color(170, 170, 200));
+							}
+						}
+					}
+				}
 			}
 			if(b == clearMap) {
 				System.out.println("Clear");
