@@ -78,7 +78,6 @@ public class AStarAlgorithm {
 					}
 					if(open.contains(neighbor)) {
 						if(neighbor.getStepCost() > current.getStepCost() + 1) {
-							System.out.println(neighbor);
 							neighbor.setParent(current);
 							neighbor.setCosts(current.getStepCost() + 1, calculateHeuristicCost(neighbor));
 							System.out.print("Found better path: ");
@@ -141,7 +140,7 @@ public class AStarAlgorithm {
 		System.out.println(parent);
 
 		while(parent != null && !start.equals(parent)) {
-			steps.add(parent);
+			steps.add(0, parent);
 			current = parent;
 			parent = current.getParent();
 		}
