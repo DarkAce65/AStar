@@ -128,6 +128,7 @@ public class AStarDisplay extends JPanel {
 
 	public void findPath() {
 		if(validateMap(map)) {
+			clearMap();
 			ArrayList<Node> steps = algorithm.findPath(map);
 			CostSortedNodeList open = algorithm.getOpenList();
 			CostSortedNodeList closed = algorithm.getClosedList();
