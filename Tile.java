@@ -3,8 +3,11 @@ import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
 public class Tile extends JPanel {
+	private final Node node;
+
 	public Tile(Node n) {
 		super();
+		node = n;
 		Color c = Color.WHITE;
 		switch(n.getType()) {
 			case 1:
@@ -22,5 +25,9 @@ public class Tile extends JPanel {
 		}
 		setBackground(c);
 		setBorder(new MatteBorder(1, 1, 1, 1, new Color(100, 100, 100)));
+	}
+
+	public Node getNode() {
+		return node;
 	}
 }
