@@ -1,8 +1,9 @@
 import java.awt.Container;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.SpringLayout;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -27,7 +28,7 @@ public class AStar extends JFrame {
 		}
 
 		JPanel panel = new JPanel();
-		panel.setLayout(new SpringLayout());
+		panel.setLayout(new GridBagLayout());
 		panel.add(new JLabel("Test"));
 
 		Container c = getContentPane();
@@ -46,7 +47,6 @@ public class AStar extends JFrame {
 		Node[][] map = new Node[mapData.size()][mapData.get(0).length];
 		for(int i = 0; i < map.length; i++) {
 			for(int j = 0; j < map[0].length; j++) {
-				System.out.println(mapData.get(i)[j]);
 				map[i][j] = new Node(Integer.parseInt(mapData.get(i)[j].trim()));
 			}
 		}
