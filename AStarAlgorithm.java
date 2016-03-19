@@ -44,7 +44,6 @@ public class AStarAlgorithm {
 					}
 					end = map[x][y];
 				}
-				map[x][y].setLocation(y, x);
 			}
 		}
 		if(start != null && end != null) {
