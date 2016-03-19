@@ -26,15 +26,12 @@ public class AStar extends JFrame implements ActionListener {
 	public AStar() {
 		super("A* Algorithm");
 		algorithm = new AStarAlgorithm();
-		loadDefaultMap();
 
 		this.setLayout(new BorderLayout());
-		this.setResizable(false);
+		// this.setResizable(false);
 
 		displayGrid = new JPanel();
-		setDisplayGridSize();
 		displayGrid.setBorder(new EmptyBorder(10, 10, 10, 10));
-		displayGrid.setLayout(new GridLayout(map.length, map[0].length));
 
 		JPanel controls = new JPanel();
 		controls.setLayout(new GridLayout(1, 2, 5, 0));
@@ -52,15 +49,11 @@ public class AStar extends JFrame implements ActionListener {
 		container.add(displayGrid, BorderLayout.CENTER);
 		container.add(controls, BorderLayout.SOUTH);
 
-		for(int i = 0; i < map.length; i++) {
-			for(int j = 0; j < map[0].length; j++) {
-				displayMap[i][j] = new Tile(map[i][j]);
-				displayGrid.add(displayMap[i][j]);
-			}
-		}
 		displayGrid.validate();
 		displayGrid.repaint();
 		this.pack();
+
+		loadDefaultMap();
 	}
 
 	private void setDisplayGridSize() {
@@ -79,6 +72,25 @@ public class AStar extends JFrame implements ActionListener {
 		}
 
 		displayGrid.setPreferredSize(new Dimension(width, height));
+	}
+
+	private void buildDisplayGrid() {
+		displayMap = new Tile[map.length][map[0].length];
+
+		displayGrid.removeAll();
+		displayGrid.setLayout(new GridLayout(map.length, map[0].length));
+		setDisplayGridSize();
+
+		for(int i = 0; i < map.length; i++) {
+			for(int j = 0; j < map[0].length; j++) {
+				displayMap[i][j] = new Tile(map[i][j]);
+				displayGrid.add(displayMap[i][j]);
+			}
+		}
+
+		displayGrid.validate();
+		displayGrid.repaint();
+		this.pack();
 	}
 
 	private boolean validateMap(Node[][] map) {
@@ -128,7 +140,7 @@ public class AStar extends JFrame implements ActionListener {
 			}
 
 			this.map = map;
-			this.displayMap = new Tile[map.length][map[0].length];
+			buildDisplayGrid();
 		}
 		catch(IOException e) {
 			e.printStackTrace();
@@ -147,7 +159,7 @@ public class AStar extends JFrame implements ActionListener {
 		map[3][7] = new Node(7, 3, 2);
 
 		this.map = map;
-		this.displayMap = new Tile[7][11];
+		buildDisplayGrid();
 	}
 
 	public void actionPerformed(ActionEvent e) {
