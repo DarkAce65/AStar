@@ -6,14 +6,14 @@ public class Node extends Point implements Comparable<Node> {
 	private int stepCost = 0;
 	private int heuristicCost = 0;
 
-	public Node(int type) {
-		super(0, 0);
+	public Node(int x, int y, int type) {
+		super(x, y);
 		this.type = type;
 		this.parent = null;
 	}
 
-	public Node() {
-		this(0);
+	public Node(int x, int y) {
+		this(x, y, 0);
 	}
 
 	public int getType() {
