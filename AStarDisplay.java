@@ -151,6 +151,14 @@ public class AStarDisplay extends JPanel {
 	}
 
 	public void clearMap() {
+		for(Tile[] row : displayMap) {
+			for(Tile t : row) {
+				t.reset();
+			}
+		}
+	}
+
+	public void clearWalls() {
 		for(int i = 0; i < map.length; i++) {
 			for(int j = 0; j < map[0].length; j++) {
 				if(displayMap[i][j].getNode().getType() >= 3) {
@@ -159,7 +167,6 @@ public class AStarDisplay extends JPanel {
 				displayMap[i][j].reset();
 			}
 		}
-		buildDisplayGrid();
 	}
 
 	public void resizeMap(int rows, int cols) {
