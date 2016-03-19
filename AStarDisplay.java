@@ -14,6 +14,8 @@ import java.util.ArrayList;
 public class AStarDisplay extends JPanel implements MouseListener {
 	private AStarAlgorithm algorithm;
 
+	public boolean settingStart = false, settingEnd = false;
+
 	private Node[][] map;
 	private Tile[][] displayMap;
 
@@ -122,8 +124,8 @@ public class AStarDisplay extends JPanel implements MouseListener {
 				map[i][j] = new Node(j, i);
 			}
 		}
-		map[3][3] = new Node(3, 3, 1);
-		map[3][7] = new Node(7, 3, 2);
+		map[3][3].setType(1);
+		map[3][7].setType(2);
 
 		this.map = map;
 		buildDisplayGrid();
@@ -149,6 +151,32 @@ public class AStarDisplay extends JPanel implements MouseListener {
 							displayMap[i][j].setBackground(new Color(140, 230, 230));
 						}
 					}
+				}
+			}
+		}
+	}
+
+	public void setStart(int x, int y) {
+		for(Tile[] row : displayMap) {
+			for(Tile t : row) {
+				if(t.getNode().getType() == 1) {
+					t.getNode().setType(0);
+					displayMap[x][y].getNode().setType(1);
+					clearMap();
+					return;
+				}
+			}
+		}
+	}
+
+	public void setEnd(int x, int y) {
+		for(Tile[] row : displayMap) {
+			for(Tile t : row) {
+				if(t.getNode().getType() == 2) {
+					t.getNode().setType(0);
+					displayMap[x][y].getNode().setType(2);
+					clearMap();
+					return;
 				}
 			}
 		}
@@ -195,13 +223,25 @@ public class AStarDisplay extends JPanel implements MouseListener {
 		if(findComponentAt(e.getX(), e.getY()) instanceof Tile) {
 			Tile t = (Tile) findComponentAt(e.getX(), e.getY());
 			Node n = t.getNode();
-			if(n.getType() == 0) {
-				n.setType(3);
+			if(settingStart) {
+				setStart(n.y, n.x);
+				settingStart = false;
 			}
-			else if(n.getType() == 3) {
-				n.setType(0);
+			else if(settingEnd) {
+				setEnd(n.y, n.x);
+				settingEnd = false;
 			}
-			t.reset();
+			else {
+				switch(n.getType()) {
+					case 0:
+						n.setType(3);
+						break;
+					case 3:
+						n.setType(0);
+						break;
+				}
+				t.reset();
+			}
 		}
 	}
 	public void mouseReleased(MouseEvent e) {}

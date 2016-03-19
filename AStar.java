@@ -12,7 +12,7 @@ import javax.swing.border.EmptyBorder;
 import java.util.ArrayList;
 
 public class AStar extends JFrame implements ActionListener {
-	private JButton findPathButton, loadButton, resizeButton, clearWallsButton;
+	private JButton setStartButton, setEndButton, findPathButton, loadButton, resizeButton, clearWallsButton;
 	private AStarDisplay displayGrid;
 
 	public AStar() {
@@ -24,9 +24,13 @@ public class AStar extends JFrame implements ActionListener {
 		displayGrid = new AStarDisplay();
 
 		JPanel controls = new JPanel();
-		controls.setLayout(new GridLayout(1, 4, 5, 0));
+		controls.setLayout(new GridLayout(2, 3, 5, 5));
 		controls.setBorder(new EmptyBorder(0, 30, 10, 30));
 
+		setStartButton = new JButton("Set Start");
+		setStartButton.addActionListener(this);
+		setEndButton = new JButton("Set End");
+		setEndButton.addActionListener(this);
 		findPathButton = new JButton("Find Path");
 		findPathButton.addActionListener(this);
 		loadButton = new JButton("Load Map");
@@ -36,6 +40,8 @@ public class AStar extends JFrame implements ActionListener {
 		clearWallsButton = new JButton("Clear Walls");
 		clearWallsButton.addActionListener(this);
 
+		controls.add(setStartButton);
+		controls.add(setEndButton);
 		controls.add(findPathButton);
 		controls.add(loadButton);
 		controls.add(resizeButton);
@@ -56,7 +62,13 @@ public class AStar extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() instanceof JButton) {
 			JButton b = (JButton) e.getSource();
-			if(b == findPathButton) {
+			if(b == setStartButton) {
+				displayGrid.settingStart = true;
+			}
+			else if(b == setEndButton) {
+				displayGrid.settingEnd = true;
+			}
+			else if(b == findPathButton) {
 				displayGrid.findPath();
 			}
 			else if(b == loadButton) {
