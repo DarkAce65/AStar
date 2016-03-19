@@ -164,6 +164,8 @@ public class AStarDisplay extends JPanel {
 	}
 
 	public void resizeMap(int rows, int cols) {
+		rows = Math.max(2, rows);
+		cols = Math.max(2, cols);
 		map = new Node[rows][cols];
 		displayMap = new Tile[rows][cols];
 		for(int i = 0; i < rows; i++) {
@@ -172,6 +174,10 @@ public class AStarDisplay extends JPanel {
 				displayMap[i][j] = new Tile(map[i][j]);
 			}
 		}
+		map[0][0] = new Node(0, 0, 1);
+		displayMap[0][0] = new Tile(map[0][0]);
+		map[rows - 1][cols - 1] = new Node(cols - 1, rows - 1, 2);
+		displayMap[rows - 1][cols - 1] = new Tile(map[rows - 1][cols - 1]);
 		buildDisplayGrid();
 	}
 }

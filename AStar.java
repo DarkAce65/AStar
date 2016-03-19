@@ -83,7 +83,7 @@ public class AStar extends JFrame implements ActionListener {
 				rowColPanel.add(new JLabel("Columns:"));
 				rowColPanel.add(cols);
 
-				int result = JOptionPane.showConfirmDialog(null, rowColPanel, "Please Enter X and Y Values", JOptionPane.OK_CANCEL_OPTION);
+				int result = JOptionPane.showConfirmDialog(null, rowColPanel, "Resize Map", JOptionPane.OK_CANCEL_OPTION);
 				if (result == JOptionPane.OK_OPTION) {
 					displayGrid.resizeMap(Integer.parseInt(rows.getText().trim()), Integer.parseInt(cols.getText().trim()));
 					this.pack();
