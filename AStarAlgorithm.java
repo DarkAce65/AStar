@@ -106,29 +106,18 @@ public class AStarAlgorithm {
 	}
 
 	private ArrayList<Node> getNeighbors(Node node) {
-		ArrayList<Node> neighbors = new ArrayList<Node>(4);
-		if(node.x > 0) {
-			Node n = map[node.y][node.x - 1];
-			if(n.getType() < 3) {
-				neighbors.add(n);
-			}
-		}
-		if(node.y > 0) {
-			Node n = map[node.y - 1][node.x];
-			if(n.getType() < 3) {
-				neighbors.add(n);
-			}
-		}
-		if(node.x < map[0].length - 1) {
-			Node n = map[node.y][node.x + 1];
-			if(n.getType() < 3) {
-				neighbors.add(n);
-			}
-		}
-		if(node.y < map.length - 1) {
-			Node n = map[node.y + 1][node.x];
-			if(n.getType() < 3) {
-				neighbors.add(n);
+		ArrayList<Node> neighbors = new ArrayList<Node>();
+		int rowStart = Math.max(0, node.y - 1);
+		int rowEnd = Math.min(map.length - 1, node.y + 1);
+		int colStart = Math.max(0, node.x - 1);
+		int colEnd = Math.min(map[0].length - 1, node.x + 1);
+
+		for(int row = rowStart; row <= rowEnd; row++) {
+			for(int col = colStart; col <= colEnd; col++) {
+				Node n = map[row][col];
+				if(!n.equals(node) && (row == node.y || col == node.x) && n.getType() < 3) {
+					neighbors.add(n);
+				}
 			}
 		}
 		return neighbors;
