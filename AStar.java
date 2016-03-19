@@ -16,10 +16,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class AStar extends JFrame implements ActionListener {
-	private JButton findPath, clearMap;
+	private AStarAlgorithm algorithm;
 	private Node[][] map;
 	private Tile[][] displayMap;
-	private AStarAlgorithm algorithm;
+
+	private JButton findPath, clearMap;
+	private JPanel displayGrid;
 
 	public AStar() {
 		super("A* Algorithm");
@@ -43,17 +45,10 @@ public class AStar extends JFrame implements ActionListener {
 		this.setLayout(new BorderLayout());
 		this.setResizable(false);
 
-		JPanel display = new JPanel();
-		double ratio = (double) map.length / map[0].length;
-		int width = 450;
-		int height = (int) (450 * ratio);
-		if(ratio > 1) {
-			width = (int) (450 / ratio);
-			height = 450;
-		}
-		display.setPreferredSize(new Dimension(width, height));
-		display.setLayout(new GridLayout(map.length, map[0].length));
-		display.setBorder(new EmptyBorder(10, 10, 10, 10));
+		displayGrid = new JPanel();
+		setDisplayGridSize();
+		displayGrid.setBorder(new EmptyBorder(10, 10, 10, 10));
+		displayGrid.setLayout(new GridLayout(map.length, map[0].length));
 
 		JPanel controls = new JPanel();
 		controls.setLayout(new GridLayout(1, 2, 5, 0));
@@ -67,19 +62,37 @@ public class AStar extends JFrame implements ActionListener {
 		controls.add(findPath);
 		controls.add(clearMap);
 
-		Container container = getContentPane();
-		container.add(display, BorderLayout.CENTER);
+		Container container = this.getContentPane();
+		container.add(displayGrid, BorderLayout.CENTER);
 		container.add(controls, BorderLayout.SOUTH);
 
 		for(int i = 0; i < map.length; i++) {
 			for(int j = 0; j < map[0].length; j++) {
 				displayMap[i][j] = new Tile(map[i][j]);
-				display.add(displayMap[i][j]);
+				displayGrid.add(displayMap[i][j]);
 			}
 		}
-		display.validate();
-		display.repaint();
+		displayGrid.validate();
+		displayGrid.repaint();
 		this.pack();
+	}
+
+	private void setDisplayGridSize() {
+		double ratio = (double) map.length / map[0].length;
+		int width = map[0].length * 35;
+		int height = map.length * 35;
+		int maxWidth = 500;
+		int maxHeight = (int) (500 * ratio);
+		if(ratio > 1) {
+			maxWidth = (int) (500 / ratio);
+			maxHeight = 500;
+		}
+		if(width > maxWidth || height > maxHeight) {
+			width = maxWidth;
+			height = maxHeight;
+		}
+
+		displayGrid.setPreferredSize(new Dimension(width, height));
 	}
 
 	private boolean validateMap(Node[][] map) {
