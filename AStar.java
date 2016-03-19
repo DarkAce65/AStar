@@ -28,7 +28,7 @@ public class AStar extends JFrame implements ActionListener {
 		algorithm = new AStarAlgorithm();
 
 		this.setLayout(new BorderLayout());
-		// this.setResizable(false);
+		this.setResizable(false);
 
 		displayGrid = new JPanel();
 		displayGrid.setBorder(new EmptyBorder(10, 10, 10, 10));
