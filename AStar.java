@@ -43,7 +43,14 @@ public class AStar extends JFrame implements ActionListener {
 		this.setResizable(false);
 
 		JPanel display = new JPanel();
-		display.setPreferredSize(new Dimension(450, 450));
+		double ratio = (double) map.length / map[0].length;
+		int width = 450;
+		int height = (int) (450 * ratio);
+		if(ratio > 1) {
+			width = (int) (450 / ratio);
+			height = 450;
+		}
+		display.setPreferredSize(new Dimension(width, height));
 		display.setLayout(new GridLayout(map.length, map[0].length));
 		display.setBorder(new EmptyBorder(10, 10, 10, 10));
 
