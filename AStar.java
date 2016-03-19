@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -20,7 +21,7 @@ public class AStar extends JFrame implements ActionListener {
 	private Node[][] map;
 	private Tile[][] displayMap;
 
-	private JButton findPath, clearMap;
+	private JButton findPathButton, loadButton, clearMapButton;
 	private JPanel displayGrid;
 
 	public AStar() {
@@ -37,13 +38,16 @@ public class AStar extends JFrame implements ActionListener {
 		controls.setLayout(new GridLayout(1, 2, 5, 0));
 		controls.setBorder(new EmptyBorder(0, 30, 10, 30));
 
-		findPath = new JButton("Find Path");
-		findPath.addActionListener(this);
-		clearMap = new JButton("Clear Map");
-		clearMap.addActionListener(this);
+		findPathButton = new JButton("Find Path");
+		findPathButton.addActionListener(this);
+		loadButton = new JButton("Load Map");
+		loadButton.addActionListener(this);
+		clearMapButton = new JButton("Clear Map");
+		clearMapButton.addActionListener(this);
 
-		controls.add(findPath);
-		controls.add(clearMap);
+		controls.add(findPathButton);
+		controls.add(loadButton);
+		controls.add(clearMapButton);
 
 		Container container = this.getContentPane();
 		container.add(displayGrid, BorderLayout.CENTER);
@@ -165,7 +169,7 @@ public class AStar extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() instanceof JButton) {
 			JButton b = (JButton) e.getSource();
-			if(b == findPath) {
+			if(b == findPathButton) {
 				ArrayList<Node> steps = algorithm.findPath(map);
 				CostSortedNodeList open = algorithm.getOpenList();
 				CostSortedNodeList closed = algorithm.getClosedList();
@@ -186,7 +190,13 @@ public class AStar extends JFrame implements ActionListener {
 					}
 				}
 			}
-			if(b == clearMap) {
+			if(b == loadButton) {
+				String fileName = JOptionPane.showInputDialog("Enter the file name of the map to load: ");
+				if(fileName != null) {
+					loadMapFromFile(fileName);
+				}
+			}
+			if(b == clearMapButton) {
 				for(Tile[] row : displayMap) {
 					for(Tile t : row) {
 						t.reset();
