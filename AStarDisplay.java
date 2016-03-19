@@ -154,8 +154,7 @@ public class AStarDisplay extends JPanel {
 		for(int i = 0; i < map.length; i++) {
 			for(int j = 0; j < map[0].length; j++) {
 				if(displayMap[i][j].getNode().getType() >= 3) {
-					map[i][j] = new Node(j, i);
-					displayMap[i][j] = new Tile(map[i][j]);
+					map[i][j].setType(0);
 				}
 				displayMap[i][j].reset();
 			}
