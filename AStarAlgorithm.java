@@ -71,7 +71,7 @@ public class AStarAlgorithm {
 				closed.add(current);
 				System.out.println(current);
 				for(Node neighbor : getNeighbors(current)) {
-					if(closed.contains(neighbor) || neighbor.getType() == 3) {
+					if(closed.contains(neighbor) || neighbor.getType() >= 3) {
 						System.out.print("Skip neighbor: ");
 						System.out.println(neighbor);
 						continue;
@@ -109,25 +109,25 @@ public class AStarAlgorithm {
 		ArrayList<Node> neighbors = new ArrayList<Node>(4);
 		if(node.x > 0) {
 			Node n = map[node.y][node.x - 1];
-			if(n.getType() != 3) {
+			if(n.getType() < 3) {
 				neighbors.add(n);
 			}
 		}
 		if(node.y > 0) {
 			Node n = map[node.y - 1][node.x];
-			if(n.getType() != 3) {
+			if(n.getType() < 3) {
 				neighbors.add(n);
 			}
 		}
 		if(node.x < map[0].length - 1) {
 			Node n = map[node.y][node.x + 1];
-			if(n.getType() != 3) {
+			if(n.getType() < 3) {
 				neighbors.add(n);
 			}
 		}
 		if(node.y < map.length - 1) {
 			Node n = map[node.y + 1][node.x];
-			if(n.getType() != 3) {
+			if(n.getType() < 3) {
 				neighbors.add(n);
 			}
 		}
