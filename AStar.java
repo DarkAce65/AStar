@@ -147,7 +147,7 @@ public class AStar extends JFrame implements ActionListener {
 			buildDisplayGrid();
 		}
 		catch(IOException e) {
-			e.printStackTrace();
+			System.out.println("An error occurred when trying to load " + fileName);
 			loadDefaultMap();
 		}
 	}
