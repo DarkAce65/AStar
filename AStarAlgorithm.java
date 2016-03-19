@@ -21,6 +21,10 @@ public class AStarAlgorithm {
 		closed = new CostSortedNodeList();
 	}
 
+	public ArrayList<Node> getSteps() {
+		return steps;
+	}
+
 	private boolean evaulateMap(Node[][] map) {
 		Node start = null;
 		Node end = null;
