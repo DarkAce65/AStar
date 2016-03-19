@@ -26,7 +26,13 @@ public class AStar extends JFrame implements ActionListener {
 
 		try {
 			map = getMapFromFile("map.csv");
-			System.out.println("Loaded map.csv");
+			if(!validateMap(map)) {
+				map = createDefaultMap();
+				System.out.println("Loaded default map");
+			}
+			else {
+				System.out.println("Loaded map.csv");
+			}
 		}
 		catch(IOException e) {
 			map = createDefaultMap();
@@ -65,6 +71,34 @@ public class AStar extends JFrame implements ActionListener {
 		display.validate();
 		display.repaint();
 		this.pack();
+	}
+
+	private boolean validateMap(Node[][] map) {
+		boolean start = false;
+		boolean end = false;
+		for(int x = 0; x < map.length; x++) {
+			for(int y = 0; y < map[0].length; y++) {
+				if(map[x][y].getType() == 1) {
+					if(start) {
+						System.out.println("More than one start position found.");
+						return false;
+					}
+					start = true;
+				}
+				else if(map[x][y].getType() == 2) {
+					if(end) {
+						System.out.println("More than one end position found.");
+						return false;
+					}
+					end = true;
+				}
+			}
+		}
+		if(start && end) {
+			return true;
+		}
+		System.out.println("Missing start or end position.");
+		return false;
 	}
 
 	private Node[][] getMapFromFile(String fileName) throws IOException {

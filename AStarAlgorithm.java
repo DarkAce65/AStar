@@ -33,79 +33,72 @@ public class AStarAlgorithm {
 		return closed;
 	}
 
-	private boolean evaulateMap(Node[][] map) {
+	private void loadMap(Node[][] map) {
 		Node start = null;
 		Node end = null;
 		for(int x = 0; x < map.length; x++) {
 			for(int y = 0; y < map[0].length; y++) {
 				if(map[x][y].getType() == 1) {
-					if(start != null) {
-						System.out.println("More than one start position found.");
-						return false;
-					}
 					start = map[x][y];
 				}
 				else if(map[x][y].getType() == 2) {
-					if(end != null) {
-						System.out.println("More than one end position found.");
-						return false;
-					}
 					end = map[x][y];
 				}
+				if(start != null && end != null) {
+					this.map = map;
+					this.start = start;
+					this.end = end;
+					return;
+				}
 			}
 		}
-		if(start != null && end != null) {
-			this.map = map;
-			this.start = start;
-			this.end = end;
-			return true;
-		}
-		System.out.println("Missing start or end position.");
-		return false;
+		this.map = map;
+		this.start = start;
+		this.end = end;
 	}
 
-	public void findPath(Node[][] map) {
-		if(evaulateMap(map)) {
-			open.clear();
-			closed.clear();
-			steps.clear();
+	public ArrayList<Node> findPath(Node[][] map) {
+		loadMap(map);
+		open.clear();
+		closed.clear();
+		steps.clear();
 
-			start.setCosts(0, calculateHeuristicCost(start));
-			open.add(start);
+		start.setCosts(0, calculateHeuristicCost(start));
+		open.add(start);
 
-			while(open.size() > 0) {
-				Node current = open.poll();
-				if(closed.contains(end)) {
-					break;
+		while(open.size() > 0) {
+			Node current = open.poll();
+			if(closed.contains(end)) {
+				break;
+			}
+			closed.add(current);
+			System.out.println(current);
+			for(Node neighbor : getNeighbors(current)) {
+				if(closed.contains(neighbor) || neighbor.getType() >= 3) {
+					System.out.print("Skip neighbor: ");
+					System.out.println(neighbor);
+					continue;
 				}
-				closed.add(current);
-				System.out.println(current);
-				for(Node neighbor : getNeighbors(current)) {
-					if(closed.contains(neighbor) || neighbor.getType() >= 3) {
-						System.out.print("Skip neighbor: ");
-						System.out.println(neighbor);
-						continue;
-					}
-					if(open.contains(neighbor)) {
-						if(neighbor.getStepCost() > current.getStepCost() + 1) {
-							neighbor.setParent(current);
-							neighbor.setCosts(current.getStepCost() + 1, calculateHeuristicCost(neighbor));
-							System.out.print("Found better path: ");
-							System.out.println(neighbor);
-						}
-					}
-					else {
+				if(open.contains(neighbor)) {
+					if(neighbor.getStepCost() > current.getStepCost() + 1) {
 						neighbor.setParent(current);
 						neighbor.setCosts(current.getStepCost() + 1, calculateHeuristicCost(neighbor));
-						open.add(neighbor);
-						System.out.print("Add neighbor to open list: ");
+						System.out.print("Found better path: ");
 						System.out.println(neighbor);
 					}
 				}
-				System.out.println("--");
+				else {
+					neighbor.setParent(current);
+					neighbor.setCosts(current.getStepCost() + 1, calculateHeuristicCost(neighbor));
+					open.add(neighbor);
+					System.out.print("Add neighbor to open list: ");
+					System.out.println(neighbor);
+				}
 			}
-			reconstructPath();
+			System.out.println("--");
 		}
+		reconstructPath();
+		return steps;
 	}
 
 	private int calculateHeuristicCost(Node node) {
