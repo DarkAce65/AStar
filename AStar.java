@@ -16,13 +16,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class AStar extends JFrame implements ActionListener {
-	private javax.swing.Timer timer;
+	private JButton findPath, clearMap;
 	private Node[][] map;
 	private AStarAlgorithm algorithm;
 
 	public AStar() {
 		super("A* Algorithm");
-		timer = new javax.swing.Timer(1000 / 60, this);
 		algorithm = new AStarAlgorithm();
 
 		try {
@@ -45,8 +44,14 @@ public class AStar extends JFrame implements ActionListener {
 		JPanel controls = new JPanel();
 		controls.setLayout(new GridLayout(1, 2, 5, 0));
 		controls.setBorder(new EmptyBorder(0, 30, 10, 30));
-		controls.add(new JButton("Find Path"));
-		controls.add(new JButton("Clear Map"));
+
+		findPath = new JButton("Find Path");
+		findPath.addActionListener(this);
+		clearMap = new JButton("Clear Map");
+		clearMap.addActionListener(this);
+
+		controls.add(findPath);
+		controls.add(clearMap);
 
 		Container container = getContentPane();
 		container.add(display, BorderLayout.CENTER);
@@ -95,6 +100,15 @@ public class AStar extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() instanceof JButton) {
+			JButton b = (JButton) e.getSource();
+			if(b == findPath) {
+				System.out.println(algorithm.findPath(map));
+			}
+			if(b == clearMap) {
+				System.out.println("Clear");
+			}
+		}
 		repaint();
 	}
 
@@ -102,7 +116,5 @@ public class AStar extends JFrame implements ActionListener {
 		AStar window = new AStar();
 		window.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		window.setVisible(true);
-
-		window.algorithm.findPath(window.map);
 	}
 }
