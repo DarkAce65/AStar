@@ -83,25 +83,25 @@ public class AStarAlgorithm {
 			}
 			System.out.println(current);
 			for(Node neighbor : getNeighbors(current)) {
-				if(closed.contains(neighbor) || neighbor.getType() >= 3) {
+				int stepCost = current.getStepCost() + 1;
+				if(neighbor.getType() >= 3 || (closed.contains(neighbor) && neighbor.getStepCost() <= stepCost)) {
 					System.out.print("Skip neighbor: ");
 					System.out.println(neighbor);
-					continue;
-				}
-				if(open.contains(neighbor)) {
-					if(neighbor.getStepCost() > current.getStepCost() + 1) {
-						neighbor.setParent(current);
-						neighbor.setCosts(current.getStepCost() + 1, calculateHeuristicCost(neighbor));
-						System.out.print("Found better path: ");
-						System.out.println(neighbor);
-					}
 				}
 				else {
-					neighbor.setParent(current);
-					neighbor.setCosts(current.getStepCost() + 1, calculateHeuristicCost(neighbor));
-					open.add(neighbor);
-					System.out.print("Add neighbor to open list: ");
-					System.out.println(neighbor);
+					if(!(open.contains(neighbor) && neighbor.getStepCost() <= stepCost)) {
+						neighbor.setParent(current);
+						neighbor.setCosts(stepCost, calculateHeuristicCost(neighbor));
+						if(open.contains(neighbor)) {
+							System.out.print("Found better path: ");
+							System.out.println(neighbor);
+						}
+						else {
+							open.add(neighbor);
+							System.out.print("Add neighbor to open list: ");
+							System.out.println(neighbor);
+						}
+					}
 				}
 			}
 			System.out.println("--");
@@ -124,7 +124,7 @@ public class AStarAlgorithm {
 		for(int row = rowStart; row <= rowEnd; row++) {
 			for(int col = colStart; col <= colEnd; col++) {
 				Node n = map[row][col];
-				if(!n.equals(node) && (row == node.y || col == node.x) && n.getType() < 3) {
+				if(!n.equals(node) && (row == node.y || col == node.x)) {
 					neighbors.add(n);
 				}
 			}
