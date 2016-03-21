@@ -76,7 +76,7 @@ public class AStarAlgorithm {
 		open.add(start);
 
 		while(open.size() > 0) {
-			Node current = open.poll();
+			Node current = open.remove(0);
 			closed.add(current);
 			if(closed.contains(end)) {
 				break;
