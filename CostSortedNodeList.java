@@ -9,27 +9,8 @@ public class CostSortedNodeList extends ArrayList<Node> {
 		super(c);
 	}
 
-	public int indexOf(Node node) {
-		int low = 0;
-		int high = this.size() - 1;
-		while(low <= high) {
-			int middle = (high + low) / 2;
-			int diff = this.get(middle).compareTo(node);
-			if(this.get(middle).equals(node)) {
-				return middle;
-			}
-			else if(diff > 0) {
-				high = middle - 1;
-			}
-			else {
-				low = middle + 1;
-			}
-		}
-		return -1;
-	}
-
 	public boolean contains(Node node) {
-		return indexOf(node) != -1;
+		return super.indexOf(node) != -1;
 	}
 
 	public boolean add(Node node) {
