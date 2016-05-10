@@ -92,9 +92,11 @@ public class AStarAlgorithm {
 					if(!(open.contains(neighbor) && neighbor.getStepCost() <= stepCost)) {
 						neighbor.setParent(current);
 						neighbor.setCosts(stepCost, calculateHeuristicCost(neighbor));
-						if(open.contains(neighbor)) {
+						int openIndex = open.indexOf(neighbor);
+						if(openIndex != -1) {
 							System.out.print("Found better path: ");
 							System.out.println(neighbor);
+							open.add(open.remove(openIndex));
 						}
 						else {
 							open.add(neighbor);
