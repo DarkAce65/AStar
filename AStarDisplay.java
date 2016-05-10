@@ -136,7 +136,7 @@ public class AStarDisplay extends JPanel implements MouseListener {
 			clearMap();
 			ArrayList<Node> steps = algorithm.findPath(map);
 			CostSortedNodeList open = algorithm.getOpenList();
-			CostSortedNodeList closed = algorithm.getClosedList();
+			ArrayList<Node> closed = algorithm.getClosedList();
 			for(int i = 0; i < map.length; i++) {
 				for(int j = 0; j < map[0].length; j++) {
 					Node n = displayMap[i][j].getNode();

@@ -8,7 +8,7 @@ public class AStarAlgorithm {
 	private ArrayList<Node> steps;
 
 	private CostSortedNodeList open;
-	private CostSortedNodeList closed;
+	private ArrayList<Node> closed;
 
 	public AStarAlgorithm() {
 		map = new Node[0][0];
@@ -18,7 +18,7 @@ public class AStarAlgorithm {
 		steps = new ArrayList<Node>();
 
 		open = new CostSortedNodeList();
-		closed = new CostSortedNodeList();
+		closed = new ArrayList<Node>();
 	}
 
 	public void reset() {
@@ -40,7 +40,7 @@ public class AStarAlgorithm {
 		return open;
 	}
 
-	public CostSortedNodeList getClosedList() {
+	public ArrayList<Node> getClosedList() {
 		return closed;
 	}
 
