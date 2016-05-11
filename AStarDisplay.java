@@ -156,30 +156,43 @@ public class AStarDisplay extends JPanel implements MouseListener {
 		}
 	}
 
-	public void setStart(int x, int y) {
+	public Tile firstTileOfType(int type) {
 		for(Tile[] row : displayMap) {
 			for(Tile t : row) {
-				if(t.getNode().getType() == 1) {
-					t.getNode().setType(0);
-					displayMap[x][y].getNode().setType(1);
-					clearMap();
-					return;
+				if(t.getNode().getType() == type) {
+					return t;
 				}
 			}
 		}
+		return null;
+	}
+
+	public void setStart(int x, int y) {
+		Tile t = firstTileOfType(1);
+		if(t != null) {
+			if(displayMap[x][y].getNode().getType() == 2) {
+				t.getNode().setType(2);
+			}
+			else {
+				t.getNode().setType(0);
+			}
+		}
+		displayMap[x][y].getNode().setType(1);
+		clearMap();
 	}
 
 	public void setEnd(int x, int y) {
-		for(Tile[] row : displayMap) {
-			for(Tile t : row) {
-				if(t.getNode().getType() == 2) {
-					t.getNode().setType(0);
-					displayMap[x][y].getNode().setType(2);
-					clearMap();
-					return;
-				}
+		Tile t = firstTileOfType(2);
+		if(t != null) {
+			if(displayMap[x][y].getNode().getType() == 1) {
+				t.getNode().setType(1);
+			}
+			else {
+				t.getNode().setType(0);
 			}
 		}
+		displayMap[x][y].getNode().setType(2);
+		clearMap();
 	}
 
 	public void clearMap() {
