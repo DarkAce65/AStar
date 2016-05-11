@@ -12,15 +12,17 @@ import javax.swing.border.EmptyBorder;
 import java.util.ArrayList;
 
 public class AStar extends JFrame implements ActionListener {
+	public static boolean verbose = false;
 	private JButton setStartButton, setEndButton, findPathButton, loadButton, resizeButton, clearWallsButton;
 	private AStarDisplay displayGrid;
 
-	public AStar() {
+	public AStar(boolean v) {
 		super("A* Algorithm");
 
 		this.setLayout(new GridBagLayout());
 		this.setResizable(false);
 
+		verbose = v;
 		displayGrid = new AStarDisplay();
 
 		JPanel controls = new JPanel();
@@ -57,6 +59,10 @@ public class AStar extends JFrame implements ActionListener {
 
 		displayGrid.loadDefaultMap();
 		this.pack();
+	}
+
+	public AStar() {
+		this(false);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -103,7 +109,11 @@ public class AStar extends JFrame implements ActionListener {
 	}
 
 	public static void main(String[] args) {
-		AStar window = new AStar();
+		boolean v = false;
+		if(args.length > 0 && ("--verbose".equals(args[0]) || "-v".equals(args[0]))) {
+			v = true;
+		}
+		AStar window = new AStar(v);
 		window.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		window.setVisible(true);
 	}

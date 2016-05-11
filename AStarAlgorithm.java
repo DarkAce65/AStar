@@ -72,6 +72,9 @@ public class AStarAlgorithm {
 		loadMap(map);
 		reset();
 
+		if(AStar.verbose) {
+			System.out.println("Begin finding path\n--");
+		}
 		start.setCosts(0, calculateHeuristicCost(start));
 		open.add(start);
 
@@ -81,7 +84,9 @@ public class AStarAlgorithm {
 			if(closed.contains(end)) {
 				break;
 			}
-			System.out.println(current);
+			if(AStar.verbose) {
+				System.out.println(current);
+			}
 			for(Node neighbor : getNeighbors(current)) {
 				int stepCost = current.getStepCost() + 1;
 				if(neighbor.getType() < 3 && (neighbor.getStepCost() > stepCost || (!closed.contains(neighbor) && !open.contains(neighbor)))) {
@@ -90,19 +95,24 @@ public class AStarAlgorithm {
 					int openIndex = open.indexOf(neighbor);
 					if(openIndex != -1) {
 						open.add(open.remove(openIndex));
-						System.out.print("  Found better path: ");
-						System.out.println(neighbor);
+						if(AStar.verbose) {
+							System.out.println("  Found better path: " + neighbor);
+						}
 					}
 					else {
 						open.add(neighbor);
-						System.out.print("  Add neighbor to open list: ");
-						System.out.println(neighbor);
+						if(AStar.verbose) {
+							System.out.println("  Add neighbor to open list: " + neighbor);
+						}
 					}
 				}
-				System.out.print("  Skip neighbor: ");
-				System.out.println(neighbor);
+				else if(AStar.verbose) {
+					System.out.println("  Skip neighbor: " + neighbor);
+				}
 			}
-			System.out.println("---");
+			if(AStar.verbose) {
+				System.out.println("---");
+			}
 		}
 		reconstructPath();
 		return steps;
