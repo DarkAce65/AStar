@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AStarDisplay extends JPanel implements MouseListener {
 	private AStarAlgorithm algorithm;
@@ -134,20 +135,18 @@ public class AStarDisplay extends JPanel implements MouseListener {
 	public void findPath() {
 		if(validateMap(map)) {
 			clearMap();
-			ArrayList<Node> steps = algorithm.findPath(map);
-			CostSortedNodeList open = algorithm.getOpenList();
-			ArrayList<Node> closed = algorithm.getClosedList();
-			for(Node n : open) {
+			HashMap<String, ArrayList<Node>> dataLists = algorithm.findPath(map);
+			for(Node n : dataLists.get("open")) {
 				if(n.getType() == 0) {
 					displayMap[n.y][n.x].setBackground(new Color(140, 230, 230));
 				}
 			}
-			for(Node n : closed) {
+			for(Node n : dataLists.get("closed")) {
 				if(n.getType() == 0) {
 					displayMap[n.y][n.x].setBackground(new Color(150, 150, 170));
 				}
 			}
-			for(Node n : steps) {
+			for(Node n : dataLists.get("steps")) {
 				if(n.getType() == 0) {
 					displayMap[n.y][n.x].setBackground(Color.YELLOW);
 				}

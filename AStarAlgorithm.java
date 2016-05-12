@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AStarAlgorithm {
 	private Node[][] map;
@@ -6,7 +7,6 @@ public class AStarAlgorithm {
 	private Node end;
 
 	private ArrayList<Node> steps;
-
 	private CostSortedNodeList open;
 	private ArrayList<Node> closed;
 
@@ -16,7 +16,6 @@ public class AStarAlgorithm {
 		end = null;
 
 		steps = new ArrayList<Node>();
-
 		open = new CostSortedNodeList();
 		closed = new ArrayList<Node>();
 	}
@@ -30,18 +29,6 @@ public class AStarAlgorithm {
 				n.setParent(null);
 			}
 		}
-	}
-
-	public ArrayList<Node> getSteps() {
-		return steps;
-	}
-
-	public CostSortedNodeList getOpenList() {
-		return open;
-	}
-
-	public ArrayList<Node> getClosedList() {
-		return closed;
 	}
 
 	private void loadMap(Node[][] map) {
@@ -68,7 +55,7 @@ public class AStarAlgorithm {
 		this.end = end;
 	}
 
-	public ArrayList<Node> findPath(Node[][] map) {
+	public HashMap<String, ArrayList<Node>> findPath(Node[][] map) {
 		loadMap(map);
 		reset();
 
@@ -106,7 +93,12 @@ public class AStarAlgorithm {
 		}
 		if(AStar.verbose) {System.out.println();}
 		reconstructPath();
-		return steps;
+
+		HashMap<String, ArrayList<Node>> dataLists = new HashMap<String, ArrayList<Node>>();
+		dataLists.put("steps", steps);
+		dataLists.put("open", open);
+		dataLists.put("closed", closed);
+		return dataLists;
 	}
 
 	private int calculateHeuristicCost(Node node) {
