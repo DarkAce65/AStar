@@ -52,10 +52,10 @@ public class AStarAlgorithm {
 		Node end = null;
 		for(int x = 0; x < map.length; x++) {
 			for(int y = 0; y < map[0].length; y++) {
-				if(map[x][y].getType() == 1) {
+				if(map[x][y].getType() == NodeType.START) {
 					start = map[x][y];
 				}
-				else if(map[x][y].getType() == 2) {
+				else if(map[x][y].getType() == NodeType.END) {
 					end = map[x][y];
 				}
 			}
@@ -76,7 +76,7 @@ public class AStarAlgorithm {
 
 			for(Node neighbor : getNeighbors(map, current)) {
 				int stepCost = current.getStepCost() + 1;
-				if(neighbor.getType() < 3 && (neighbor.getStepCost() > stepCost || (!closed.contains(neighbor) && !open.contains(neighbor)))) {
+				if(neighbor.getType().isWalkable() && (neighbor.getStepCost() > stepCost || (!closed.contains(neighbor) && !open.contains(neighbor)))) {
 					neighbor.setParent(current);
 					neighbor.setCosts(stepCost, calculateHeuristicCost(neighbor, end));
 

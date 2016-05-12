@@ -1,26 +1,26 @@
 import java.awt.Point;
 
 public class Node extends Point implements Comparable<Node> {
-	private int type; // 0 - space, 1 - start, 2 - end, 3 - wall
+	private NodeType type;
 	private Node parent;
 	private int stepCost = 0;
 	private int heuristicCost = 0;
 
-	public Node(int x, int y, int type) {
+	public Node(int x, int y, NodeType type) {
 		super(x, y);
 		this.type = type;
 		this.parent = null;
 	}
 
 	public Node(int x, int y) {
-		this(x, y, 0);
+		this(x, y, NodeType.SPACE);
 	}
 
-	public int getType() {
+	public NodeType getType() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setType(NodeType type) {
 		this.type = type;
 	}
 

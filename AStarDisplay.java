@@ -65,14 +65,14 @@ public class AStarDisplay extends JPanel implements MouseListener {
 		boolean end = false;
 		for(int x = 0; x < map.length; x++) {
 			for(int y = 0; y < map[0].length; y++) {
-				if(map[x][y].getType() == 1) {
+				if(map[x][y].getType() == NodeType.START) {
 					if(start) {
 						System.out.println("More than one start position found.");
 						return false;
 					}
 					start = true;
 				}
-				else if(map[x][y].getType() == 2) {
+				else if(map[x][y].getType() == NodeType.END) {
 					if(end) {
 						System.out.println("More than one end position found.");
 						return false;
@@ -102,7 +102,19 @@ public class AStarDisplay extends JPanel implements MouseListener {
 			Node[][] map = new Node[mapData.size()][mapData.get(0).length];
 			for(int i = 0; i < map.length; i++) {
 				for(int j = 0; j < map[0].length; j++) {
-					map[i][j] = new Node(j, i, Integer.parseInt(mapData.get(i)[j].trim()));
+					NodeType type = NodeType.SPACE;
+					switch(Integer.parseInt(mapData.get(i)[j].trim())) {
+						case 1:
+							type = NodeType.START;
+							break;
+						case 2:
+							type = NodeType.END;
+							break;
+						case 3:
+							type = NodeType.WALL;
+							break;
+					}
+					map[i][j] = new Node(j, i, type);
 				}
 			}
 
@@ -122,8 +134,8 @@ public class AStarDisplay extends JPanel implements MouseListener {
 				map[i][j] = new Node(j, i);
 			}
 		}
-		map[3][3].setType(1);
-		map[3][7].setType(2);
+		map[3][3].setType(NodeType.START);
+		map[3][7].setType(NodeType.END);
 
 		this.map = map;
 		buildDisplayGrid();
@@ -134,24 +146,24 @@ public class AStarDisplay extends JPanel implements MouseListener {
 			clearMap();
 			HashMap<String, ArrayList<Node>> dataLists = AStarAlgorithm.findPath(map);
 			for(Node n : dataLists.get("open")) {
-				if(n.getType() == 0) {
+				if(n.getType() == NodeType.SPACE) {
 					displayMap[n.y][n.x].setBackground(new Color(140, 230, 230));
 				}
 			}
 			for(Node n : dataLists.get("closed")) {
-				if(n.getType() == 0) {
+				if(n.getType() == NodeType.SPACE) {
 					displayMap[n.y][n.x].setBackground(new Color(150, 150, 170));
 				}
 			}
 			for(Node n : dataLists.get("steps")) {
-				if(n.getType() == 0) {
+				if(n.getType() == NodeType.SPACE) {
 					displayMap[n.y][n.x].setBackground(Color.YELLOW);
 				}
 			}
 		}
 	}
 
-	public Tile firstTileOfType(int type) {
+	public Tile firstTileOfType(NodeType type) {
 		for(Tile[] row : displayMap) {
 			for(Tile t : row) {
 				if(t.getNode().getType() == type) {
@@ -163,30 +175,30 @@ public class AStarDisplay extends JPanel implements MouseListener {
 	}
 
 	public void setStart(int x, int y) {
-		Tile t = firstTileOfType(1);
+		Tile t = firstTileOfType(NodeType.START);
 		if(t != null) {
-			if(displayMap[x][y].getNode().getType() == 2) {
-				t.getNode().setType(2);
+			if(displayMap[x][y].getNode().getType() == NodeType.END) {
+				t.getNode().setType(NodeType.END);
 			}
 			else {
-				t.getNode().setType(0);
+				t.getNode().setType(NodeType.SPACE);
 			}
 		}
-		displayMap[x][y].getNode().setType(1);
+		displayMap[x][y].getNode().setType(NodeType.START);
 		clearMap();
 	}
 
 	public void setEnd(int x, int y) {
-		Tile t = firstTileOfType(2);
+		Tile t = firstTileOfType(NodeType.END);
 		if(t != null) {
-			if(displayMap[x][y].getNode().getType() == 1) {
-				t.getNode().setType(1);
+			if(displayMap[x][y].getNode().getType() == NodeType.START) {
+				t.getNode().setType(NodeType.START);
 			}
 			else {
-				t.getNode().setType(0);
+				t.getNode().setType(NodeType.SPACE);
 			}
 		}
-		displayMap[x][y].getNode().setType(2);
+		displayMap[x][y].getNode().setType(NodeType.END);
 		clearMap();
 	}
 
@@ -201,8 +213,8 @@ public class AStarDisplay extends JPanel implements MouseListener {
 	public void clearWalls() {
 		for(int i = 0; i < map.length; i++) {
 			for(int j = 0; j < map[0].length; j++) {
-				if(displayMap[i][j].getNode().getType() >= 3) {
-					map[i][j].setType(0);
+				if(displayMap[i][j].getNode().getType() == NodeType.WALL) {
+					map[i][j].setType(NodeType.SPACE);
 				}
 				displayMap[i][j].reset();
 			}
@@ -220,9 +232,9 @@ public class AStarDisplay extends JPanel implements MouseListener {
 				displayMap[i][j] = new Tile(map[i][j]);
 			}
 		}
-		map[0][0] = new Node(0, 0, 1);
+		map[0][0] = new Node(0, 0, NodeType.START);
 		displayMap[0][0] = new Tile(map[0][0]);
-		map[rows - 1][cols - 1] = new Node(cols - 1, rows - 1, 2);
+		map[rows - 1][cols - 1] = new Node(cols - 1, rows - 1, NodeType.END);
 		displayMap[rows - 1][cols - 1] = new Tile(map[rows - 1][cols - 1]);
 		buildDisplayGrid();
 	}
@@ -241,11 +253,11 @@ public class AStarDisplay extends JPanel implements MouseListener {
 			}
 			else {
 				switch(n.getType()) {
-					case 0:
-						n.setType(3);
+					case SPACE:
+						n.setType(NodeType.WALL);
 						break;
-					case 3:
-						n.setType(0);
+					case WALL:
+						n.setType(NodeType.SPACE);
 						break;
 				}
 				t.reset();

@@ -21,13 +21,13 @@ public class Tile extends JPanel {
 		node.setCosts(0, 0);
 		Color c = Color.WHITE;
 		switch(node.getType()) {
-			case 1:
+			case START:
 				c = new Color(0, 230, 0);
 				break;
-			case 2:
+			case END:
 				c = new Color(230, 0, 0);
 				break;
-			case 3:
+			case WALL:
 				c = Color.BLACK;
 				break;
 		}
