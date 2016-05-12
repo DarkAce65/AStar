@@ -72,48 +72,39 @@ public class AStarAlgorithm {
 		loadMap(map);
 		reset();
 
-		if(AStar.verbose) {
-			System.out.println("Begin finding path\n--");
-		}
+		if(AStar.verbose) {System.out.println("* Begin searching for path *");}
 		start.setCosts(0, calculateHeuristicCost(start));
 		open.add(start);
 
 		while(open.size() > 0) {
 			Node current = open.remove(0);
 			closed.add(current);
+			if(AStar.verbose) {System.out.println("_____________");}
+			if(AStar.verbose) {System.out.println("Current node: " + current);}
 			if(closed.contains(end)) {
 				break;
 			}
-			if(AStar.verbose) {
-				System.out.println(current);
-			}
+
 			for(Node neighbor : getNeighbors(current)) {
 				int stepCost = current.getStepCost() + 1;
 				if(neighbor.getType() < 3 && (neighbor.getStepCost() > stepCost || (!closed.contains(neighbor) && !open.contains(neighbor)))) {
 					neighbor.setParent(current);
 					neighbor.setCosts(stepCost, calculateHeuristicCost(neighbor));
+
 					int openIndex = open.indexOf(neighbor);
 					if(openIndex != -1) {
 						open.add(open.remove(openIndex));
-						if(AStar.verbose) {
-							System.out.println("  Found better path: " + neighbor);
-						}
+						if(AStar.verbose) {System.out.println("  Found better route to neighbor: " + neighbor);}
 					}
 					else {
 						open.add(neighbor);
-						if(AStar.verbose) {
-							System.out.println("  Add neighbor to open list: " + neighbor);
-						}
+						if(AStar.verbose) {System.out.println("  Add neighbor to open list: " + neighbor);}
 					}
 				}
-				else if(AStar.verbose) {
-					System.out.println("  Skip neighbor: " + neighbor);
-				}
-			}
-			if(AStar.verbose) {
-				System.out.println("---");
+				else if(AStar.verbose) {System.out.println("  Skip neighbor: " + neighbor);}
 			}
 		}
+		if(AStar.verbose) {System.out.println();}
 		reconstructPath();
 		return steps;
 	}
@@ -149,6 +140,14 @@ public class AStarAlgorithm {
 			steps.add(0, parent);
 			current = parent;
 			parent = current.getParent();
+		}
+		if(AStar.verbose) {
+			if(steps.contains(this.start)) {
+				System.out.println("* Pathfinding succeeded *");
+			}
+			else {
+				System.out.println("* Pathfinding failed *");
+			}
 		}
 	}
 }
