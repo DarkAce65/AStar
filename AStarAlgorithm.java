@@ -2,110 +2,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AStarAlgorithm {
-	private Node[][] map;
-	private Node start;
-	private Node end;
-
-	private ArrayList<Node> steps;
-	private CostSortedNodeList open;
-	private ArrayList<Node> closed;
-
-	public AStarAlgorithm() {
-		map = new Node[0][0];
-		start = null;
-		end = null;
-
-		steps = new ArrayList<Node>();
-		open = new CostSortedNodeList();
-		closed = new ArrayList<Node>();
-	}
-
-	public void reset() {
-		open.clear();
-		closed.clear();
-		steps.clear();
-		for(Node[] row : map) {
-			for(Node n : row) {
-				n.setParent(null);
-			}
-		}
-	}
-
-	private void loadMap(Node[][] map) {
-		Node start = null;
-		Node end = null;
-		for(int x = 0; x < map.length; x++) {
-			for(int y = 0; y < map[0].length; y++) {
-				if(map[x][y].getType() == 1) {
-					start = map[x][y];
-				}
-				else if(map[x][y].getType() == 2) {
-					end = map[x][y];
-				}
-				if(start != null && end != null) {
-					this.map = map;
-					this.start = start;
-					this.end = end;
-					return;
-				}
-			}
-		}
-		this.map = map;
-		this.start = start;
-		this.end = end;
-	}
-
-	public HashMap<String, ArrayList<Node>> findPath(Node[][] map) {
-		loadMap(map);
-		reset();
-
-		if(AStar.verbose) {System.out.println("* Begin searching for path *");}
-		start.setCosts(0, calculateHeuristicCost(start));
-		open.add(start);
-
-		while(open.size() > 0) {
-			Node current = open.remove(0);
-			closed.add(current);
-			if(AStar.verbose) {System.out.println("_____________");}
-			if(AStar.verbose) {System.out.println("Current node: " + current);}
-			if(closed.contains(end)) {
-				break;
-			}
-
-			for(Node neighbor : getNeighbors(current)) {
-				int stepCost = current.getStepCost() + 1;
-				if(neighbor.getType() < 3 && (neighbor.getStepCost() > stepCost || (!closed.contains(neighbor) && !open.contains(neighbor)))) {
-					neighbor.setParent(current);
-					neighbor.setCosts(stepCost, calculateHeuristicCost(neighbor));
-
-					int openIndex = open.indexOf(neighbor);
-					if(openIndex != -1) {
-						open.add(open.remove(openIndex));
-						if(AStar.verbose) {System.out.println("  Found better route to neighbor: " + neighbor);}
-					}
-					else {
-						open.add(neighbor);
-						if(AStar.verbose) {System.out.println("  Add neighbor to open list: " + neighbor);}
-					}
-				}
-				else if(AStar.verbose) {System.out.println("  Skip neighbor: " + neighbor);}
-			}
-		}
-		if(AStar.verbose) {System.out.println();}
-		reconstructPath();
-
-		HashMap<String, ArrayList<Node>> dataLists = new HashMap<String, ArrayList<Node>>();
-		dataLists.put("steps", steps);
-		dataLists.put("open", open);
-		dataLists.put("closed", closed);
-		return dataLists;
-	}
-
-	private int calculateHeuristicCost(Node node) {
+	private static int calculateHeuristicCost(Node node, Node end) {
 		return Math.abs(node.x - end.x) + Math.abs(node.y - end.y);
 	}
 
-	private ArrayList<Node> getNeighbors(Node node) {
+	private static ArrayList<Node> getNeighbors(Node[][] map, Node node) {
 		ArrayList<Node> neighbors = new ArrayList<Node>();
 		int rowStart = Math.max(0, node.y - 1);
 		int rowEnd = Math.min(map.length - 1, node.y + 1);
@@ -123,8 +24,8 @@ public class AStarAlgorithm {
 		return neighbors;
 	}
 
-	private void reconstructPath() {
-		Node current = this.end;
+	private static void reconstructPath(ArrayList<Node> steps, Node start, Node end) {
+		Node current = end;
 		steps.add(0, current);
 		Node parent = current.getParent();
 
@@ -134,12 +35,72 @@ public class AStarAlgorithm {
 			parent = current.getParent();
 		}
 		if(AStar.verbose) {
-			if(steps.contains(this.start)) {
+			if(steps.contains(start)) {
 				System.out.println("* Pathfinding succeeded *");
 			}
 			else {
 				System.out.println("* Pathfinding failed *");
 			}
 		}
+	}
+
+	public static HashMap<String, ArrayList<Node>> findPath(Node[][] map) {
+		ArrayList<Node> steps = new ArrayList<Node>();
+		CostSortedNodeList open = new CostSortedNodeList();
+		ArrayList<Node> closed = new ArrayList<Node>();
+		Node start = null;
+		Node end = null;
+		for(int x = 0; x < map.length; x++) {
+			for(int y = 0; y < map[0].length; y++) {
+				if(map[x][y].getType() == 1) {
+					start = map[x][y];
+				}
+				else if(map[x][y].getType() == 2) {
+					end = map[x][y];
+				}
+			}
+		}
+
+		if(AStar.verbose) {System.out.println("* Begin searching for path *");}
+		start.setCosts(0, calculateHeuristicCost(start, end));
+		open.add(start);
+
+		while(open.size() > 0) {
+			Node current = open.remove(0);
+			closed.add(current);
+			if(AStar.verbose) {System.out.println("_____________");}
+			if(AStar.verbose) {System.out.println("Current node: " + current);}
+			if(closed.contains(end)) {
+				break;
+			}
+
+			for(Node neighbor : getNeighbors(map, current)) {
+				int stepCost = current.getStepCost() + 1;
+				if(neighbor.getType() < 3 && (neighbor.getStepCost() > stepCost || (!closed.contains(neighbor) && !open.contains(neighbor)))) {
+					neighbor.setParent(current);
+					neighbor.setCosts(stepCost, calculateHeuristicCost(neighbor, end));
+
+					int openIndex = open.indexOf(neighbor);
+					if(openIndex != -1) {
+						open.add(open.remove(openIndex));
+						if(AStar.verbose) {System.out.println("  Found better route to neighbor: " + neighbor);}
+					}
+					else {
+						open.add(neighbor);
+						if(AStar.verbose) {System.out.println("  Add neighbor to open list: " + neighbor);}
+					}
+				}
+				else if(AStar.verbose) {System.out.println("  Skip neighbor: " + neighbor);}
+			}
+		}
+		if(AStar.verbose) {System.out.println();}
+		reconstructPath(steps, start, end);
+
+		HashMap<String, ArrayList<Node>> dataLists = new HashMap<String, ArrayList<Node>>();
+		dataLists.put("steps", steps);
+		dataLists.put("open", open);
+		dataLists.put("closed", closed);
+
+		return dataLists;
 	}
 }

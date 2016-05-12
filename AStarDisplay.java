@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AStarDisplay extends JPanel implements MouseListener {
-	private AStarAlgorithm algorithm;
-
 	public boolean settingStart = false, settingEnd = false;
 
 	private Node[][] map;
@@ -22,7 +20,6 @@ public class AStarDisplay extends JPanel implements MouseListener {
 
 	public AStarDisplay() {
 		super();
-		algorithm = new AStarAlgorithm();
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		addMouseListener(this);
 	}
@@ -135,7 +132,7 @@ public class AStarDisplay extends JPanel implements MouseListener {
 	public void findPath() {
 		if(validateMap(map)) {
 			clearMap();
-			HashMap<String, ArrayList<Node>> dataLists = algorithm.findPath(map);
+			HashMap<String, ArrayList<Node>> dataLists = AStarAlgorithm.findPath(map);
 			for(Node n : dataLists.get("open")) {
 				if(n.getType() == 0) {
 					displayMap[n.y][n.x].setBackground(new Color(140, 230, 230));
