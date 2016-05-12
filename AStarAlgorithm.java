@@ -142,9 +142,10 @@ public class AStarAlgorithm {
 
 	private void reconstructPath() {
 		Node current = this.end;
+		steps.add(0, current);
 		Node parent = current.getParent();
 
-		while(parent != null && !start.equals(parent)) {
+		while(parent != null) {
 			steps.add(0, parent);
 			current = parent;
 			parent = current.getParent();
