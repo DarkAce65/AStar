@@ -137,20 +137,19 @@ public class AStarDisplay extends JPanel implements MouseListener {
 			ArrayList<Node> steps = algorithm.findPath(map);
 			CostSortedNodeList open = algorithm.getOpenList();
 			ArrayList<Node> closed = algorithm.getClosedList();
-			for(int i = 0; i < map.length; i++) {
-				for(int j = 0; j < map[0].length; j++) {
-					Node n = displayMap[i][j].getNode();
-					if(n.getType() == 0) {
-						if(steps.contains(n)) {
-							displayMap[i][j].setBackground(Color.YELLOW);
-						}
-						else if(closed.contains(n)) {
-							displayMap[i][j].setBackground(new Color(150, 150, 170));
-						}
-						else if(open.contains(n)) {
-							displayMap[i][j].setBackground(new Color(140, 230, 230));
-						}
-					}
+			for(Node n : open) {
+				if(n.getType() == 0) {
+					displayMap[n.y][n.x].setBackground(new Color(140, 230, 230));
+				}
+			}
+			for(Node n : closed) {
+				if(n.getType() == 0) {
+					displayMap[n.y][n.x].setBackground(new Color(150, 150, 170));
+				}
+			}
+			for(Node n : steps) {
+				if(n.getType() == 0) {
+					displayMap[n.y][n.x].setBackground(Color.YELLOW);
 				}
 			}
 		}
