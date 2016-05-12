@@ -17,6 +17,8 @@ public class Tile extends JPanel {
 	}
 
 	public void reset() {
+		node.setParent(null);
+		node.setCosts(0, 0);
 		Color c = Color.WHITE;
 		switch(node.getType()) {
 			case 1:
