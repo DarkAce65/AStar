@@ -32,6 +32,10 @@ public class Node extends Point implements Comparable<Node> {
 		this.parent = parent;
 	}
 
+	public int getStepCost() {
+		return type.getStepCost();
+	}
+
 	public int getStepCostFromStart() {
 		return stepCostFromStart;
 	}

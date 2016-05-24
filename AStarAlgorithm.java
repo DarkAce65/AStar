@@ -75,7 +75,7 @@ public class AStarAlgorithm {
 			}
 
 			for(Node neighbor : getNeighbors(map, current)) {
-				int stepCostFromStart = current.getStepCostFromStart() + 1;
+				int stepCostFromStart = current.getStepCostFromStart() + neighbor.getStepCost();
 				if(neighbor.getType().isWalkable() && (neighbor.getStepCostFromStart() > stepCostFromStart || (!closed.contains(neighbor) && !open.contains(neighbor)))) {
 					neighbor.setParent(current);
 					neighbor.setCosts(stepCostFromStart, calculateHeuristicCost(neighbor, end));
