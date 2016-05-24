@@ -113,6 +113,9 @@ public class AStarDisplay extends JPanel implements MouseListener {
 						case 3:
 							type = NodeType.WALL;
 							break;
+						case 4:
+							type = NodeType.MOUNTAIN;
+							break;
 					}
 					map[i][j] = new Node(j, i, type);
 				}
@@ -146,17 +149,17 @@ public class AStarDisplay extends JPanel implements MouseListener {
 			clearMap();
 			HashMap<String, ArrayList<Node>> dataLists = AStarAlgorithm.findPath(map);
 			for(Node n : dataLists.get("open")) {
-				if(n.getType() == NodeType.SPACE) {
+				if(n.getType() != NodeType.START && n.getType() != NodeType.END) {
 					displayMap[n.y][n.x].setBackground(new Color(140, 230, 230));
 				}
 			}
 			for(Node n : dataLists.get("closed")) {
-				if(n.getType() == NodeType.SPACE) {
+				if(n.getType() != NodeType.START && n.getType() != NodeType.END) {
 					displayMap[n.y][n.x].setBackground(new Color(150, 150, 170));
 				}
 			}
 			for(Node n : dataLists.get("steps")) {
-				if(n.getType() == NodeType.SPACE) {
+				if(n.getType() != NodeType.START && n.getType() != NodeType.END) {
 					displayMap[n.y][n.x].setBackground(Color.YELLOW);
 				}
 			}
@@ -254,6 +257,9 @@ public class AStarDisplay extends JPanel implements MouseListener {
 			else {
 				switch(n.getType()) {
 					case SPACE:
+						n.setType(NodeType.MOUNTAIN);
+						break;
+					case MOUNTAIN:
 						n.setType(NodeType.WALL);
 						break;
 					case WALL:

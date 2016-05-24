@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Graphics;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
@@ -32,5 +33,11 @@ public class Tile extends JPanel {
 				break;
 		}
 		setBackground(c);
+		repaint();
+	}
+
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(node.getType().getTileImage(), 0, 0, this.getWidth(), this.getHeight(), this);
 	}
 }
