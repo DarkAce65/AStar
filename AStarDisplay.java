@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -256,17 +257,9 @@ public class AStarDisplay extends JPanel implements MouseListener {
 				settingEnd = false;
 			}
 			else {
-				switch(n.getType()) {
-					case SPACE:
-						n.setType(NodeType.MOUNTAIN);
-						break;
-					case MOUNTAIN:
-						n.setType(NodeType.WALL);
-						break;
-					case WALL:
-						n.setType(NodeType.SPACE);
-						break;
-				}
+				NodeType[] types = NodeType.values();
+				int newType = (Arrays.asList(types).indexOf(n.getType()) - 1) % (types.length - 2) + 2;
+				n.setType(types[newType]);
 				t.reset();
 			}
 		}
