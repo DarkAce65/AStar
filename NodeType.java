@@ -7,8 +7,9 @@ public enum NodeType {
 	START (true),
 	END   (true),
 	SPACE (true),
-	MOUNTAIN (true, 3, "mountains.png"),
-	WALL  (false, 0);
+	WALL  (false, 0),
+	FOREST (true, 2, "forest.png"),
+	MOUNTAIN (true, 3, "mountains.png");
 
 	private final boolean walkable;
 	private final int stepCost;
