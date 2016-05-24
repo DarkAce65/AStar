@@ -7,7 +7,7 @@ public enum NodeType {
 	START (true),
 	END   (true),
 	SPACE (true),
-	MOUNTAIN (true, 2, "mountains.png"),
+	MOUNTAIN (true, 3, "mountains.png"),
 	WALL  (false, 0);
 
 	private final boolean walkable;
