@@ -146,7 +146,7 @@ public class AStarDisplay extends JPanel implements MouseListener {
 
 	public void findPath() {
 		if(validateMap(map)) {
-			clearMap();
+			resetMap();
 			HashMap<String, ArrayList<Node>> dataLists = AStarAlgorithm.findPath(map);
 			for(Node n : dataLists.get("open")) {
 				if(n.getType() != NodeType.START && n.getType() != NodeType.END) {
@@ -188,7 +188,7 @@ public class AStarDisplay extends JPanel implements MouseListener {
 			}
 		}
 		displayMap[x][y].getNode().setType(NodeType.START);
-		clearMap();
+		resetMap();
 	}
 
 	public void setEnd(int x, int y) {
@@ -202,10 +202,10 @@ public class AStarDisplay extends JPanel implements MouseListener {
 			}
 		}
 		displayMap[x][y].getNode().setType(NodeType.END);
-		clearMap();
+		resetMap();
 	}
 
-	public void clearMap() {
+	public void resetMap() {
 		for(Tile[] row : displayMap) {
 			for(Tile t : row) {
 				t.reset();
@@ -213,10 +213,11 @@ public class AStarDisplay extends JPanel implements MouseListener {
 		}
 	}
 
-	public void clearWalls() {
+	public void clearMap() {
 		for(int i = 0; i < map.length; i++) {
 			for(int j = 0; j < map[0].length; j++) {
-				if(displayMap[i][j].getNode().getType() == NodeType.WALL) {
+				NodeType t = displayMap[i][j].getNode().getType();
+				if(t != NodeType.START && t != NodeType.END) {
 					map[i][j].setType(NodeType.SPACE);
 				}
 				displayMap[i][j].reset();

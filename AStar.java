@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class AStar extends JFrame implements ActionListener {
 	public static boolean verbose = false;
-	private JButton setStartButton, setEndButton, findPathButton, loadButton, resizeButton, clearWallsButton;
+	private JButton setStartButton, setEndButton, findPathButton, loadButton, resizeButton, clearMapButton;
 	private AStarDisplay displayGrid;
 
 	public AStar(boolean v) {
@@ -39,15 +39,15 @@ public class AStar extends JFrame implements ActionListener {
 		loadButton.addActionListener(this);
 		resizeButton = new JButton("Resize Map");
 		resizeButton.addActionListener(this);
-		clearWallsButton = new JButton("Clear Walls");
-		clearWallsButton.addActionListener(this);
+		clearMapButton = new JButton("Clear Map");
+		clearMapButton.addActionListener(this);
 
 		controls.add(setStartButton);
 		controls.add(setEndButton);
 		controls.add(findPathButton);
 		controls.add(loadButton);
 		controls.add(resizeButton);
-		controls.add(clearWallsButton);
+		controls.add(clearMapButton);
 
 		Container container = this.getContentPane();
 		GridBagConstraints c = new GridBagConstraints();
@@ -101,8 +101,8 @@ public class AStar extends JFrame implements ActionListener {
 					this.pack();
 				}
 			}
-			else if(b == clearWallsButton) {
-				displayGrid.clearWalls();
+			else if(b == clearMapButton) {
+				displayGrid.clearMap();
 			}
 		}
 		repaint();
