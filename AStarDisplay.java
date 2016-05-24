@@ -222,8 +222,8 @@ public class AStarDisplay extends JPanel implements MouseListener {
 	}
 
 	public void resizeMap(int rows, int cols) {
-		rows = Math.max(2, rows);
-		cols = Math.max(2, cols);
+		rows = Math.max(3, Math.min(25, rows));
+		cols = Math.max(3, Math.min(25, cols));
 		map = new Node[rows][cols];
 		displayMap = new Tile[rows][cols];
 		for(int i = 0; i < rows; i++) {
