@@ -256,7 +256,7 @@ public class AStarDisplay extends JPanel implements MouseListener {
 				setEnd(n.y, n.x);
 				settingEnd = false;
 			}
-			else {
+			else if(n.getType() != NodeType.START && n.getType() != NodeType.END) {
 				NodeType[] types = NodeType.values();
 				int newType = (Arrays.asList(types).indexOf(n.getType()) - 1) % (types.length - 2) + 2;
 				n.setType(types[newType]);
