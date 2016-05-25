@@ -145,25 +145,28 @@ public class AStarDisplay extends JPanel implements MouseListener {
 		buildDisplayGrid();
 	}
 
+	private void visualizeAlgorithm(HashMap<String, ArrayList<Node>> dataLists) {
+		for(Node n : dataLists.get("open")) {
+			if(n.getType() != NodeType.START && n.getType() != NodeType.END) {
+				displayMap[n.y][n.x].setBackground(new Color(140, 230, 230));
+			}
+		}
+		for(Node n : dataLists.get("closed")) {
+			if(n.getType() != NodeType.START && n.getType() != NodeType.END) {
+				displayMap[n.y][n.x].setBackground(new Color(150, 150, 170));
+			}
+		}
+		for(Node n : dataLists.get("steps")) {
+			if(n.getType() != NodeType.START && n.getType() != NodeType.END) {
+				displayMap[n.y][n.x].setBackground(Color.YELLOW);
+			}
+		}
+	}
+
 	public void findPath() {
 		if(validateMap(map)) {
 			resetMap();
-			HashMap<String, ArrayList<Node>> dataLists = AStarAlgorithm.findPath(map);
-			for(Node n : dataLists.get("open")) {
-				if(n.getType() != NodeType.START && n.getType() != NodeType.END) {
-					displayMap[n.y][n.x].setBackground(new Color(140, 230, 230));
-				}
-			}
-			for(Node n : dataLists.get("closed")) {
-				if(n.getType() != NodeType.START && n.getType() != NodeType.END) {
-					displayMap[n.y][n.x].setBackground(new Color(150, 150, 170));
-				}
-			}
-			for(Node n : dataLists.get("steps")) {
-				if(n.getType() != NodeType.START && n.getType() != NodeType.END) {
-					displayMap[n.y][n.x].setBackground(Color.YELLOW);
-				}
-			}
+			visualizeAlgorithm(AStarAlgorithm.findPath(map));
 		}
 	}
 
