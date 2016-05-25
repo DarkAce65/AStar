@@ -48,6 +48,7 @@ public class AStarAlgorithm {
 		ArrayList<Node> steps = new ArrayList<Node>();
 		CostSortedNodeList open = new CostSortedNodeList();
 		ArrayList<Node> closed = new ArrayList<Node>();
+		ArrayList<Node> animations = new ArrayList<Node>();
 		Node start = null;
 		Node end = null;
 		for(int x = 0; x < map.length; x++) {
@@ -68,6 +69,7 @@ public class AStarAlgorithm {
 		while(open.size() > 0) {
 			Node current = open.remove(0);
 			closed.add(current);
+			animations.add(new AnimationNode(current, "closed"));
 			if(AStar.verbose) {System.out.println("_____________");}
 			if(AStar.verbose) {System.out.println("Current node: " + current);}
 			if(closed.contains(end)) {
@@ -87,6 +89,7 @@ public class AStarAlgorithm {
 					}
 					else {
 						open.add(neighbor);
+						animations.add(new AnimationNode(neighbor, "open"));
 						if(AStar.verbose) {System.out.println("  Add neighbor to open list: " + neighbor);}
 					}
 				}
@@ -100,6 +103,7 @@ public class AStarAlgorithm {
 		dataLists.put("steps", steps);
 		dataLists.put("open", open);
 		dataLists.put("closed", closed);
+		dataLists.put("animations", animations);
 
 		return dataLists;
 	}
