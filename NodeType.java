@@ -12,10 +12,10 @@ public enum NodeType {
 	MOUNTAIN (true, 3, "mountains.png");
 
 	private final boolean walkable;
-	private final int stepCost;
+	private final double stepCost;
 	private final BufferedImage image;
 
-	NodeType(boolean walkable, int stepCost, String icon) {
+	NodeType(boolean walkable, double stepCost, String icon) {
 		this.walkable = walkable;
 		this.stepCost = stepCost;
 		if(icon != null) {
@@ -33,7 +33,7 @@ public enum NodeType {
 		}
 	}
 
-	NodeType(boolean walkable, int stepCost) {
+	NodeType(boolean walkable, double stepCost) {
 		this(walkable, stepCost, null);
 	}
 
@@ -45,7 +45,7 @@ public enum NodeType {
 		return walkable;
 	}
 
-	public int getStepCost() {
+	public double getStepCost() {
 		return stepCost;
 	}
 

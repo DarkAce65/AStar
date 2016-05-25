@@ -3,8 +3,8 @@ import java.awt.Point;
 public class Node extends Point implements Comparable<Node> {
 	private NodeType type;
 	private Node parent;
-	private int stepCostFromStart = 0;
-	private int heuristicCost = 0;
+	private double stepCostFromStart = 0;
+	private double heuristicCost = 0;
 
 	public Node(int x, int y, NodeType type) {
 		super(x, y);
@@ -32,23 +32,23 @@ public class Node extends Point implements Comparable<Node> {
 		this.parent = parent;
 	}
 
-	public int getStepCost() {
+	public double getStepCost() {
 		return type.getStepCost();
 	}
 
-	public int getStepCostFromStart() {
+	public double getStepCostFromStart() {
 		return stepCostFromStart;
 	}
 
-	public int getHeuristicCost() {
+	public double getHeuristicCost() {
 		return heuristicCost;
 	}
 
-	public int getCost() {
+	public double getCost() {
 		return stepCostFromStart + heuristicCost;
 	}
 
-	public void setCosts(int stepCostFromStart, int heuristicCost) {
+	public void setCosts(double stepCostFromStart, double heuristicCost) {
 		this.stepCostFromStart = stepCostFromStart;
 		this.heuristicCost = heuristicCost;
 	}
@@ -57,10 +57,17 @@ public class Node extends Point implements Comparable<Node> {
 		return this.x == p.x && this.y == p.y;
 	}
 
+	private int roundUp(double a) {
+		if(a > 0) {
+			return (int) Math.ceil(a);
+		}
+		return (int) Math.floor(a);
+	}
+
 	public int compareTo(Node p) {
-		int diff = this.getCost() - p.getCost();
+		int diff = roundUp(this.getCost() - p.getCost());
 		if(diff == 0) {
-			diff = this.heuristicCost - p.getHeuristicCost();
+			diff = roundUp(this.heuristicCost - p.getHeuristicCost());
 		}
 		return diff;
 	}

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AStarAlgorithm {
-	private static int calculateHeuristicCost(Node node, Node end) {
+	private static double calculateHeuristicCost(Node node, Node end) {
 		return Math.abs(node.x - end.x) + Math.abs(node.y - end.y);
 	}
 
@@ -75,7 +75,7 @@ public class AStarAlgorithm {
 			}
 
 			for(Node neighbor : getNeighbors(map, current)) {
-				int stepCostFromStart = current.getStepCostFromStart() + neighbor.getStepCost();
+				double stepCostFromStart = current.getStepCostFromStart() + neighbor.getStepCost();
 				if(neighbor.getType().isWalkable() && (neighbor.getStepCostFromStart() > stepCostFromStart || (!closed.contains(neighbor) && !open.contains(neighbor)))) {
 					neighbor.setParent(current);
 					neighbor.setCosts(stepCostFromStart, calculateHeuristicCost(neighbor, end));
