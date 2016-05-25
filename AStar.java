@@ -12,17 +12,19 @@ import javax.swing.border.EmptyBorder;
 import java.util.ArrayList;
 
 public class AStar extends JFrame implements ActionListener {
-	public static boolean verbose = false;
+	public static boolean verbose;
+	public static boolean animate;
 	private JButton setStartButton, setEndButton, findPathButton, loadButton, resizeButton, clearMapButton;
 	private AStarDisplay displayGrid;
 
-	public AStar(boolean v) {
+	public AStar(boolean v, boolean a) {
 		super("A* Algorithm");
 
 		this.setLayout(new GridBagLayout());
 		this.setResizable(false);
 
 		verbose = v;
+		animate = a;
 		displayGrid = new AStarDisplay();
 
 		JPanel controls = new JPanel();
@@ -59,10 +61,6 @@ public class AStar extends JFrame implements ActionListener {
 
 		displayGrid.loadDefaultMap();
 		this.pack();
-	}
-
-	public AStar() {
-		this(false);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -110,12 +108,16 @@ public class AStar extends JFrame implements ActionListener {
 
 	public static void main(String[] args) {
 		boolean v = false;
+		boolean a = true;
 		for(int i = 0; i < args.length; i++) {
 			if("--verbose".equals(args[i]) || "-v".equals(args[i])) {
 				v = true;
 			}
+			else if("--noAnimation".equals(args[i]) || "-na".equals(args[i])) {
+				a = false;
+			}
 		}
-		AStar window = new AStar(v);
+		AStar window = new AStar(v, a);
 		window.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		window.setVisible(true);
 	}
