@@ -16,6 +16,12 @@ public class Node extends Point implements Comparable<Node> {
 		this(x, y, NodeType.SPACE);
 	}
 
+	public Node(Node n) {
+		this(n.x, n.y, n.type);
+		this.stepCostFromStart = n.getStepCostFromStart();
+		this.heuristicCost = n.getHeuristicCost();
+	}
+
 	public NodeType getType() {
 		return type;
 	}
