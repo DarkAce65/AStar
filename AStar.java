@@ -110,8 +110,10 @@ public class AStar extends JFrame implements ActionListener {
 
 	public static void main(String[] args) {
 		boolean v = false;
-		if(args.length > 0 && ("--verbose".equals(args[0]) || "-v".equals(args[0]))) {
-			v = true;
+		for(int i = 0; i < args.length; i++) {
+			if("--verbose".equals(args[i]) || "-v".equals(args[i])) {
+				v = true;
+			}
 		}
 		AStar window = new AStar(v);
 		window.setDefaultCloseOperation(EXIT_ON_CLOSE);
