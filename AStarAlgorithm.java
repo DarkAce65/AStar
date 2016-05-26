@@ -103,6 +103,9 @@ public class AStarAlgorithm {
 		dataLists.put("steps", steps);
 		dataLists.put("open", open);
 		dataLists.put("closed", closed);
+		for(Node n : steps) {
+			animations.add(new AnimationNode(n, "step"));
+		}
 		dataLists.put("animations", animations);
 
 		return dataLists;

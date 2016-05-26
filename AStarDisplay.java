@@ -1,9 +1,12 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
 import java.io.BufferedReader;
@@ -13,16 +16,25 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class AStarDisplay extends JPanel implements MouseListener {
+public class AStarDisplay extends JPanel implements MouseListener, ActionListener {
 	public boolean settingStart = false, settingEnd = false;
+	private final Color openColor = new Color(140, 230, 230);
+	private final Color closedColor = new Color(150, 150, 170);
 
 	private Node[][] map;
 	private Tile[][] displayMap;
+
+	private Timer timer;
+	private ArrayList<AnimationNode> animationQueue;
 
 	public AStarDisplay() {
 		super();
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		addMouseListener(this);
+
+		timer = new Timer(25, this);
+		timer.start();
+		animationQueue = new ArrayList<AnimationNode>();
 	}
 
 	private void setDisplayGridSize() {
@@ -146,21 +158,26 @@ public class AStarDisplay extends JPanel implements MouseListener {
 	}
 
 	private void visualizeAlgorithm(HashMap<String, ArrayList<Node>> dataLists) {
-		Color openColor = new Color(140, 230, 230);
-		Color closedColor = new Color(150, 150, 170);
-		for(Node n : dataLists.get("open")) {
-			if(n.getType() != NodeType.START && n.getType() != NodeType.END) {
-				displayMap[n.y][n.x].setBackground(openColor);
+		if(AStar.animate) {
+			for(Node n : dataLists.get("animations")) {
+				animationQueue.add((AnimationNode) n);
 			}
 		}
-		for(Node n : dataLists.get("closed")) {
-			if(n.getType() != NodeType.START && n.getType() != NodeType.END) {
-				displayMap[n.y][n.x].setBackground(closedColor);
+		else {
+			for(Node n : dataLists.get("open")) {
+				if(n.getType() != NodeType.START && n.getType() != NodeType.END) {
+					displayMap[n.y][n.x].setBackground(openColor);
+				}
 			}
-		}
-		for(Node n : dataLists.get("steps")) {
-			if(n.getType() != NodeType.START && n.getType() != NodeType.END) {
-				displayMap[n.y][n.x].setBackground(Color.YELLOW);
+			for(Node n : dataLists.get("closed")) {
+				if(n.getType() != NodeType.START && n.getType() != NodeType.END) {
+					displayMap[n.y][n.x].setBackground(closedColor);
+				}
+			}
+			for(Node n : dataLists.get("steps")) {
+				if(n.getType() != NodeType.START && n.getType() != NodeType.END) {
+					displayMap[n.y][n.x].setBackground(Color.YELLOW);
+				}
 			}
 		}
 	}
@@ -212,6 +229,7 @@ public class AStarDisplay extends JPanel implements MouseListener {
 	}
 
 	public void resetMap() {
+		animationQueue.clear();
 		for(Tile[] row : displayMap) {
 			for(Tile t : row) {
 				t.reset();
@@ -220,6 +238,7 @@ public class AStarDisplay extends JPanel implements MouseListener {
 	}
 
 	public void clearMap() {
+		animationQueue.clear();
 		for(int i = 0; i < map.length; i++) {
 			for(int j = 0; j < map[0].length; j++) {
 				NodeType t = displayMap[i][j].getNode().getType();
@@ -232,6 +251,7 @@ public class AStarDisplay extends JPanel implements MouseListener {
 	}
 
 	public void resizeMap(int rows, int cols) {
+		animationQueue.clear();
 		rows = Math.max(3, Math.min(25, rows));
 		cols = Math.max(3, Math.min(25, cols));
 		map = new Node[rows][cols];
@@ -249,8 +269,31 @@ public class AStarDisplay extends JPanel implements MouseListener {
 		buildDisplayGrid();
 	}
 
+	public void actionPerformed(ActionEvent e) {
+		if(animationQueue.size() > 0) {
+			AnimationNode an = animationQueue.remove(0);
+			if(an.getType() != NodeType.START && an.getType() != NodeType.END) {
+				if(an.getList() == "step") {
+					displayMap[an.y][an.x].setBackground(Color.YELLOW);
+					for(Node n : animationQueue) {
+						if(n.getType() != NodeType.START && n.getType() != NodeType.END) {
+							displayMap[n.y][n.x].setBackground(Color.YELLOW);
+						}
+					}
+				}
+				else if(an.getList() == "closed") {
+					displayMap[an.y][an.x].setBackground(closedColor);
+				}
+				else {
+					displayMap[an.y][an.x].setBackground(openColor);
+				}
+			}
+		}
+	}
+
 	public void mousePressed(MouseEvent e) {
 		if(findComponentAt(e.getX(), e.getY()) instanceof Tile) {
+			animationQueue.clear();
 			Tile t = (Tile) findComponentAt(e.getX(), e.getY());
 			Node n = t.getNode();
 			if(settingStart) {
