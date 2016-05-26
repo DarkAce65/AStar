@@ -24,7 +24,7 @@ public class AStarAlgorithm {
 		return neighbors;
 	}
 
-	private static void reconstructPath(ArrayList<Node> steps, Node start, Node end) {
+	private static void reconstructPath(ArrayList<Node> steps, Node start, Node end, int iterations) {
 		Node current = end;
 		steps.add(0, current);
 		Node parent = current.getParent();
@@ -37,9 +37,11 @@ public class AStarAlgorithm {
 		if(AStar.verbose) {
 			if(steps.contains(start)) {
 				System.out.println("* Pathfinding succeeded *");
+				System.out.println("Shortest path: " + steps.size() + ", Iterations: " + iterations);
 			}
 			else {
 				System.out.println("* Pathfinding failed *");
+				System.out.println("Iterations: " + iterations);
 			}
 		}
 	}
@@ -63,10 +65,12 @@ public class AStarAlgorithm {
 		}
 
 		if(AStar.verbose) {System.out.println("* Begin searching for path *");}
+		int iterations = 0;
 		start.setCosts(0, calculateHeuristicCost(start, end));
 		open.add(start);
 
 		while(open.size() > 0) {
+			iterations++;
 			Node current = open.remove(0);
 			closed.add(current);
 			animations.add(new AnimationNode(current, "closed"));
@@ -97,7 +101,7 @@ public class AStarAlgorithm {
 			}
 		}
 		if(AStar.verbose) {System.out.println();}
-		reconstructPath(steps, start, end);
+		reconstructPath(steps, start, end, iterations);
 
 		HashMap<String, ArrayList<Node>> dataLists = new HashMap<String, ArrayList<Node>>();
 		dataLists.put("steps", steps);
