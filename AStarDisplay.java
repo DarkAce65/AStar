@@ -135,6 +135,7 @@ public class AStarDisplay extends JPanel implements MouseListener, ActionListene
 			}
 
 			this.map = map;
+			if(AStar.verbose) {System.out.println("Loaded " + fileName);}
 			buildDisplayGrid();
 		}
 		catch(IOException e) {
@@ -254,6 +255,7 @@ public class AStarDisplay extends JPanel implements MouseListener, ActionListene
 		animationQueue.clear();
 		rows = Math.max(3, Math.min(25, rows));
 		cols = Math.max(3, Math.min(25, cols));
+		if(AStar.verbose) {System.out.println("Resized map to " + rows + " rows and " + cols + " columns");}
 		map = new Node[rows][cols];
 		displayMap = new Tile[rows][cols];
 		for(int i = 0; i < rows; i++) {
