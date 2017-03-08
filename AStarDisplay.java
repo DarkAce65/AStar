@@ -103,6 +103,7 @@ public class AStarDisplay extends JPanel implements MouseListener, ActionListene
 
 	public void loadMapFromFile(String fileName) {
 		try {
+			animationQueue.clear();
 			BufferedReader mapFileReader = new BufferedReader(new FileReader(fileName), 1024);
 			String line = mapFileReader.readLine();
 			ArrayList<String[]> mapData = new ArrayList<String[]>();
