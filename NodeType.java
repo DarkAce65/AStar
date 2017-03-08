@@ -1,6 +1,7 @@
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import javax.imageio.*;
 
 public enum NodeType {
@@ -11,6 +12,8 @@ public enum NodeType {
 	FOREST (true, 2, "forest.png"),
 	MOUNTAIN (true, 3, "mountains.png");
 
+	private static final NodeType[] rTypes = {SPACE, WALL, FOREST, MOUNTAIN};
+	private static final Random r = new Random();
 	private final boolean walkable;
 	private final double stepCost;
 	private final BufferedImage image;
@@ -39,6 +42,10 @@ public enum NodeType {
 
 	NodeType(boolean walkable) {
 		this(walkable, 1, null);
+	}
+
+	public static NodeType randomType() {
+		return rTypes[r.nextInt(rTypes.length)];
 	}
 
 	public boolean isWalkable() {

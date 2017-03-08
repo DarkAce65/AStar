@@ -238,6 +238,19 @@ public class AStarDisplay extends JPanel implements MouseListener, ActionListene
 		}
 	}
 
+	public void randomMap() {
+		animationQueue.clear();
+		for(int i = 0; i < map.length; i++) {
+			for(int j = 0; j < map[0].length; j++) {
+				NodeType t = displayMap[i][j].getNode().getType();
+				if(t != NodeType.START && t != NodeType.END) {
+					map[i][j].setType(NodeType.randomType());
+				}
+				displayMap[i][j].reset();
+			}
+		}
+	}
+
 	public void clearMap() {
 		animationQueue.clear();
 		for(int i = 0; i < map.length; i++) {

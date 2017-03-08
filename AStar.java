@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class AStar extends JFrame implements ActionListener {
 	public static boolean verbose;
 	public static boolean animate;
-	private JButton setStartButton, setEndButton, findPathButton, loadButton, resizeButton, clearMapButton;
+	private JButton setStartButton, setEndButton, findPathButton, loadButton, resizeButton, randomMapButton, clearMapButton;
 	private AStarDisplay displayGrid;
 
 	public AStar(boolean v, boolean a) {
@@ -28,27 +28,30 @@ public class AStar extends JFrame implements ActionListener {
 		displayGrid = new AStarDisplay();
 
 		JPanel controls = new JPanel();
-		controls.setLayout(new GridLayout(2, 3, 5, 5));
+		controls.setLayout(new GridLayout(3, 3, 5, 5));
 		controls.setBorder(new EmptyBorder(0, 30, 10, 30));
 
+		findPathButton = new JButton("Find Path");
+		findPathButton.addActionListener(this);
 		setStartButton = new JButton("Set Start");
 		setStartButton.addActionListener(this);
 		setEndButton = new JButton("Set End");
 		setEndButton.addActionListener(this);
-		findPathButton = new JButton("Find Path");
-		findPathButton.addActionListener(this);
 		loadButton = new JButton("Load Map");
 		loadButton.addActionListener(this);
 		resizeButton = new JButton("Resize Map");
 		resizeButton.addActionListener(this);
+		randomMapButton = new JButton("Random Map");
+		randomMapButton.addActionListener(this);
 		clearMapButton = new JButton("Clear Map");
 		clearMapButton.addActionListener(this);
 
+		controls.add(findPathButton);
 		controls.add(setStartButton);
 		controls.add(setEndButton);
-		controls.add(findPathButton);
 		controls.add(loadButton);
 		controls.add(resizeButton);
+		controls.add(randomMapButton);
 		controls.add(clearMapButton);
 
 		Container container = this.getContentPane();
@@ -94,10 +97,13 @@ public class AStar extends JFrame implements ActionListener {
 				rowColPanel.add(cols);
 
 				int result = JOptionPane.showConfirmDialog(null, rowColPanel, "Resize Map", JOptionPane.OK_CANCEL_OPTION);
-				if (result == JOptionPane.OK_OPTION) {
+				if(result == JOptionPane.OK_OPTION) {
 					displayGrid.resizeMap(Integer.parseInt(rows.getText().trim()), Integer.parseInt(cols.getText().trim()));
 					this.pack();
 				}
+			}
+			else if(b == randomMapButton) {
+				displayGrid.randomMap();
 			}
 			else if(b == clearMapButton) {
 				displayGrid.clearMap();
