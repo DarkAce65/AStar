@@ -98,7 +98,11 @@ public class AStar extends JFrame implements ActionListener {
 
 				int result = JOptionPane.showConfirmDialog(null, rowColPanel, "Resize Map", JOptionPane.OK_CANCEL_OPTION);
 				if(result == JOptionPane.OK_OPTION) {
-					displayGrid.resizeMap(Integer.parseInt(rows.getText().trim()), Integer.parseInt(cols.getText().trim()));
+					String rIn = rows.getText().replaceAll("[^0-9]", "");
+					String cIn = cols.getText().replaceAll("[^0-9]", "");
+					int r = rIn.equals("") ? 0 : Integer.parseInt(rIn);
+					int c = cIn.equals("") ? 0 : Integer.parseInt(cIn);
+					displayGrid.resizeMap(r, c);
 					this.pack();
 				}
 			}
